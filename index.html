@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasado — SEO Checker V2</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#3eb53e;--gd:#2d8f2d;--orange:#f0840c;--red:#dc3232;
+  --blue:#3b82f6;--purple:#8b5cf6;
+  --sb:#111827;--sbh:#1f2937;--sbt:#9ca3af;--sbta:#f9fafb;--sbb:#374151;
+  --pg:#f0f2f5;--pb:#e5e7eb;--text:#111827;--tm:#6b7280;--tx:#9ca3af;
+  --ib:#d1d5db;--if:#3eb53e;--hi:#fef9c3;--hib:#f0840c;
+}
+html,body{height:100%;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);font-size:14px;}
+#app{display:grid;grid-template-rows:52px 1fr;grid-template-columns:190px 1fr 400px;height:100vh;overflow:hidden;}
+/* TOP HEADER */
+#hdr{grid-column:1/-1;grid-row:1;background:var(--sb);border-bottom:1px solid var(--sbb);display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 16px;z-index:20;}
+.hdr-left{display:flex;align-items:center;gap:12px;}
+.hdr-badge{background:var(--green);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:.5px;flex-shrink:0;}
+.hdr-title{color:var(--sbta);font-size:15px;font-weight:700;line-height:1;}
+.hdr-sub{color:var(--sbt);font-size:10px;margin-top:2px;}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.hdr-btn{padding:7px 14px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap;}
+.hdr-btn.ol{background:transparent;border:1px solid #4b5563;color:#d1d5db;}
+.hdr-btn.ol:hover{border-color:#9ca3af;color:#f9fafb;}
+.hdr-btn.pr{background:var(--green);border:none;color:#fff;}
+.hdr-btn.pr:hover{background:var(--gd);}
+
+/* SIDEBAR */
+#sb{grid-column:1;grid-row:2;background:var(--sb);display:flex;flex-direction:column;overflow-y:auto;border-right:1px solid var(--sbb);}
+#sb::-webkit-scrollbar{width:3px;}#sb::-webkit-scrollbar-thumb{background:#374151;}
+.sb-brand{display:none;}
+.sb-acts{display:none;}
+.sb-btn{display:none;}
+.sb-nav{flex:1;padding:6px 0;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 14px;cursor:pointer;color:var(--sbt);font-size:12px;font-weight:500;border-left:2px solid transparent;transition:all .15s;user-select:none;}
+.ni:hover{background:var(--sbh);color:#e5e7eb;}
+.ni.active{background:var(--sbh);color:var(--sbta);border-left-color:var(--green);}
+.ni svg{width:14px;height:14px;flex-shrink:0;opacity:.6;}
+.ni.active svg,.ni:hover svg{opacity:1;}
+.nbadge{min-width:18px;height:18px;border-radius:9px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;margin-left:auto;flex-shrink:0;}
+.nbadge.r{background:var(--red);color:#fff;}
+.nbadge.o{background:var(--orange);color:#fff;}
+.sb-bot{border-top:1px solid var(--sbb);padding:8px 10px;display:flex;flex-direction:column;gap:7px;}
+.sb-rpt{width:100%;padding:7px 10px;border-radius:5px;font-family:inherit;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;background:#1f2937;border:1px solid var(--sbb);color:var(--sbt);transition:all .15s;}
+.sb-rpt:hover{border-color:#6b7280;color:#e5e7eb;}
+.sb-rpt svg{width:12px;height:12px;flex-shrink:0;}
+.sb-summ{background:var(--sbh);border-radius:7px;padding:9px 12px;cursor:pointer;}
+.sb-summ:hover{background:#253040;}
+.sb-st{display:flex;align-items:center;gap:6px;margin-bottom:3px;}
+.sb-si{color:#fbbf24;font-size:12px;}
+.sb-sn{color:#e5e7eb;font-size:11px;font-weight:600;}
+.sb-nb{background:#7c3aed;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.sb-sl{color:var(--sbt);font-size:10px;}
+
+/* EDITOR */
+#em{grid-column:2;grid-row:2;background:var(--pg);overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:14px;}
+#em::-webkit-scrollbar{width:5px;}#em::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px;}
+.ec{background:#fff;border-radius:10px;padding:20px 22px;box-shadow:0 1px 3px rgba(0,0,0,.07);}
+.fgs{display:flex;flex-direction:column;gap:12px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fgr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fh{display:flex;justify-content:space-between;align-items:center;}
+.lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);display:flex;align-items:center;gap:4px;}
+.lnote{font-size:9px;font-style:italic;color:var(--tx);font-weight:400;text-transform:none;letter-spacing:0;}
+.ctr{font-size:11px;font-weight:600;color:var(--tm);}
+.ctr.g{color:var(--green);}
+.ctr.o{color:var(--orange);}
+.ctr.r{color:var(--red);}
+.fi{width:100%;padding:8px 11px;border:1.5px solid var(--ib);border-radius:6px;font-family:inherit;font-size:13px;color:var(--text);background:#fff;transition:border .15s,box-shadow .15s;}
+.fi:focus{outline:none;border-color:var(--if);box-shadow:0 0 0 2px rgba(62,181,62,.1);}
+textarea.fi{resize:vertical;min-height:68px;line-height:1.6;}
+.fbar{height:3px;border-radius:2px;background:#e5e7eb;margin-top:3px;overflow:hidden;}
+.fbar-f{height:100%;border-radius:2px;background:var(--green);transition:width .3s;}
+.url-ok{font-size:10.5px;color:var(--green);display:flex;align-items:center;gap:5px;margin-top:3px;}
+.url-clr{background:none;border:none;color:var(--tm);font-size:10.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0;margin-left:4px;}
+.url-clr:hover{color:var(--red);}
+
+/* TOOLBAR */
+#tb{display:flex;align-items:center;gap:2px;padding:5px 8px;border:1.5px solid var(--ib);border-bottom:none;border-radius:6px 6px 0 0;background:#fafafa;flex-wrap:wrap;}
+.tb-s{padding:4px 6px;border:1px solid var(--ib);border-radius:4px;font-family:inherit;font-size:11.5px;color:var(--text);background:#fff;cursor:pointer;margin-right:2px;}
+.tb-s:focus{outline:none;border-color:var(--if);}
+.tb-sp{width:1px;height:16px;background:var(--ib);margin:0 3px;flex-shrink:0;}
+.tbb{width:26px;height:26px;border:none;background:transparent;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--text);font-family:inherit;transition:background .1s;}
+.tbb:hover{background:#e5e7eb;}
+.tbb svg{width:13px;height:13px;flex-shrink:0;}
+#eb{border:1.5px solid var(--ib);border-top:none;border-radius:0 0 6px 6px;padding:14px 16px;min-height:300px;outline:none;overflow-y:auto;font-size:14px;line-height:1.8;color:var(--text);background:#fff;transition:border .15s;}
+#eb:focus{border-color:var(--if);}
+#eb:empty::before{content:attr(data-ph);color:#bbb;pointer-events:none;display:block;}
+#eb h1{font-size:22px;font-weight:700;margin:10px 0 5px;line-height:1.3;}
+#eb h2{font-size:18px;font-weight:600;margin:14px 0 4px;line-height:1.35;}
+#eb h3{font-size:15px;font-weight:600;margin:10px 0 4px;line-height:1.4;}
+#eb p{margin:0 0 8px;}
+#eb ul,#eb ol{margin:0 0 8px 22px;}
+#eb li{margin-bottom:3px;}
+#eb a{color:#2563eb;text-decoration:underline;}
+#eb b,#eb strong{font-weight:700;}
+#eb i,#eb em{font-style:italic;}
+#eb table{border-collapse:collapse;width:100%;margin:10px 0;}
+#eb td,#eb th{border:1px solid #d1d5db;padding:6px 10px;font-size:13px;}
+#eb th{background:#f3f4f6;font-weight:600;}
+#eb .yhi{background:var(--hi);border-bottom:2px solid var(--hib);border-radius:2px;padding:0 1px;}
+#eb .yhiel{background:#fef9c3;border-left:3px solid var(--hib);padding-left:10px;border-radius:0 4px 4px 0;display:block;}
+#es{display:flex;align-items:center;gap:10px;padding:7px 2px;font-size:11px;color:var(--tm);flex-wrap:wrap;}
+.sv{font-weight:600;color:var(--text);}
+.ss{color:#d1d5db;}
+.asv{margin-left:auto;display:flex;align-items:center;gap:4px;font-weight:500;}
+.asv.ok{color:var(--green);}
+.asv.pn{color:var(--tm);}
+
+/* RIGHT PANEL */
+#rp{grid-column:3;grid-row:2;background:#f9fafb;border-left:1px solid var(--pb);overflow-y:auto;display:flex;flex-direction:column;}
+#rp::-webkit-scrollbar{width:5px;}#rp::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px;}
+#scs{padding:15px 16px 12px;border-bottom:1px solid var(--pb);background:#fff;}
+.sc-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.sc-t{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);}
+.sc-sb{display:flex;align-items:center;gap:16px;}
+.gw{position:relative;width:96px;height:96px;flex-shrink:0;}
+.gsv{width:96px;height:96px;}
+.gt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;line-height:1;}
+.gn{font-size:22px;font-weight:700;color:var(--text);display:block;}
+.gd{font-size:10px;color:var(--tm);display:block;}
+.gl{font-size:10px;color:var(--tm);margin-top:7px;text-align:center;}
+.cbs{flex:1;display:flex;flex-direction:column;gap:8px;}
+.cbr{display:flex;flex-direction:column;gap:3px;}
+.cbh{display:flex;justify-content:space-between;}
+.cbn{font-size:11px;font-weight:600;color:var(--text);}
+.cbs2{font-size:11px;font-weight:700;color:var(--tm);}
+.cbt{height:4px;background:#e5e7eb;border-radius:3px;overflow:hidden;}
+.cbf{height:100%;border-radius:3px;transition:width .5s;}
+#pts{display:flex;border-bottom:1px solid var(--pb);background:#fff;position:sticky;top:0;z-index:10;overflow-x:auto;}
+#pts::-webkit-scrollbar{display:none;}
+.pt{padding:8px 10px;border:none;background:none;cursor:pointer;font-family:inherit;font-size:10.5px;font-weight:700;color:var(--tm);border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;text-transform:uppercase;letter-spacing:.4px;}
+.pt:hover{color:var(--text);}
+.pt.active{color:var(--text);border-bottom-color:var(--green);}
+.pt[data-tab="readability"].active{border-bottom-color:var(--purple);}
+.pt[data-tab="aeo"].active{border-bottom-color:var(--orange);}
+.pt[data-tab="eeat"].active{border-bottom-color:var(--green);}
+.pt[data-tab="links"].active{border-bottom-color:var(--blue);}
+.pv{display:none;}
+.pv.active{display:block;}
+
+/* Checklist */
+.clw{padding:10px 14px;}
+.clh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.clt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);}
+.clc{font-size:12px;font-weight:700;color:var(--text);}
+.cli{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid #f3f4f6;}
+.cli:last-child{border-bottom:none;}
+.clic{width:15px;height:15px;flex-shrink:0;margin-top:1px;}
+.clib{flex:1;min-width:0;}
+.clin{font-size:11.5px;font-weight:600;color:var(--text);line-height:1.3;}
+.clim{font-size:10.5px;color:var(--tm);margin-top:1px;line-height:1.4;}
+.clir{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.clp{font-size:11px;font-weight:700;}
+.clp.p{color:var(--green);}
+.clp.z{color:var(--red);}
+.eyeb{background:none;border:none;cursor:pointer;padding:2px 3px;border-radius:3px;color:#ccc;transition:all .15s;font-size:13px;line-height:1;}
+.eyeb:hover{color:var(--tm);background:#f0f0f0;}
+.eyeb.on{color:var(--orange);}
+
+/* Overview */
+.ovs{padding:10px 14px;border-bottom:1px solid var(--pb);}
+.ovt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);display:flex;align-items:center;gap:5px;margin-bottom:8px;}
+.pri{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f3f4f6;}
+.pri:last-child{border-bottom:none;}
+.prb{padding:2px 6px;border-radius:3px;font-size:10px;font-weight:700;flex-shrink:0;}
+.prb.h{background:#fee2e2;color:#dc2626;}
+.prb.m{background:#fff7ed;color:#d97706;}
+.prb.l{background:#f3f4f6;color:#6b7280;}
+.prt{flex:1;font-size:11px;color:var(--text);line-height:1.3;}
+.prp{font-size:11px;font-weight:700;color:var(--green);flex-shrink:0;}
+.va{display:flex;align-items:center;gap:3px;margin-top:8px;font-size:11px;color:var(--green);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;padding:0;}
+.va:hover{text-decoration:underline;}
+
+/* Collapsible */
+.cols{border-bottom:1px solid var(--pb);}
+.colh{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;cursor:pointer;background:#fff;user-select:none;}
+.colh:hover{background:#f9fafb;}
+.cohl{display:flex;align-items:center;gap:7px;}
+.cold{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.colt{font-size:12px;font-weight:700;color:var(--text);}
+.cols2{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;}
+.cols2.strong{background:#dcfce7;color:#16a34a;}
+.cols2.moderate{background:#fff7ed;color:#d97706;}
+.cols2.weak{background:#fee2e2;color:#dc2626;}
+.colc{font-size:9px;color:var(--tm);transition:transform .2s;}
+.colc.open{transform:rotate(180deg);}
+.colb{display:none;padding:0 14px 10px;background:#fff;}
+.colb.open{display:block;}
+
+/* Flesch */
+.fls{padding:10px 14px;background:#fff;border-bottom:1px solid var(--pb);}
+.flt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:7px;}
+.flb{position:relative;height:20px;border-radius:5px;overflow:hidden;margin-bottom:4px;background:linear-gradient(to right,#dc3232 0%,#dc3232 30%,#f0840c 30%,#f0840c 60%,#3eb53e 60%,#3eb53e 100%);}
+.flp{position:absolute;top:0;width:3px;height:100%;background:#111827;border-radius:2px;transition:left .5s;}
+.fll{display:flex;justify-content:space-between;font-size:9px;color:var(--tm);}
+.fli{display:flex;align-items:center;gap:7px;margin-top:5px;}
+.fln{font-size:18px;font-weight:700;color:var(--text);}
+.fld{font-size:11px;color:var(--tm);}
+
+/* Power words */
+.pws{padding:10px 14px;background:#fff;border-bottom:1px solid var(--pb);}
+.pwt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:7px;}
+.pwrow{display:flex;gap:10px;}
+.pwb{flex:1;padding:8px 10px;border-radius:6px;background:#f9fafb;border:1px solid #e5e7eb;cursor:pointer;transition:background .15s;}
+.pwb:hover{background:#f0f0f0;}
+.pwn{font-size:18px;font-weight:700;}
+.pwn.pw{color:var(--green);}
+.pwn.wk{color:var(--orange);}
+.pwl{font-size:10px;color:var(--tm);margin-top:1px;}
+
+/* Links */
+.lks{padding:10px 14px;border-bottom:1px solid var(--pb);}
+.lkt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:7px;}
+.lki{padding:6px 8px;background:#fff;border:1px solid var(--pb);border-radius:5px;margin-bottom:5px;}
+.lkn{font-size:12px;color:var(--text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lku{font-size:10.5px;color:var(--blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lke{font-size:11px;color:var(--tm);padding:8px;text-align:center;background:#f9fafb;border-radius:5px;}
+
+/* Settings */
+.sets{padding:12px 14px;border-bottom:1px solid var(--pb);}
+.sett{font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.setl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:4px;display:block;}
+.setd{font-size:10.5px;color:var(--tm);margin-bottom:5px;line-height:1.4;}
+select.setsel{width:100%;padding:7px 9px;border:1.5px solid var(--ib);border-radius:5px;font-family:inherit;font-size:12px;color:var(--text);background:#fff;cursor:pointer;}
+select.setsel:focus{outline:none;border-color:var(--if);}
+
+/* Pre-publish */
+.pps{padding:10px 14px;background:#fff;border-bottom:1px solid var(--pb);}
+.ppt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:7px;}
+.ppi{display:flex;align-items:center;gap:7px;padding:4px 0;}
+.ppi input[type=checkbox]{width:13px;height:13px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
+.ppi label{font-size:11.5px;color:var(--text);cursor:pointer;}
+
+/* No results */
+.nr{padding:24px 14px;text-align:center;color:var(--tm);}
+.nri{font-size:24px;margin-bottom:6px;}
+.nrt{font-size:12px;line-height:1.5;}
+
+/* Report modal */
+#rm{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;}
+#rm.open{display:flex;}
+.rmc{background:#fff;border-radius:12px;width:100%;max-width:490px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.25);}
+.rmch{padding:15px 20px;border-bottom:1px solid var(--pb);display:flex;align-items:center;justify-content:space-between;}
+.rmct{font-size:15px;font-weight:700;color:var(--text);}
+.rmcx{background:none;border:none;font-size:18px;cursor:pointer;color:var(--tm);}
+.rmcb{padding:18px 20px;}
+.rmt{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--pb);display:flex;flex-direction:column;gap:4px;}
+.rmtr{display:flex;gap:8px;font-size:11.5px;}
+.rmtk{color:var(--tm);min-width:100px;}
+.rmtv{color:var(--text);font-weight:500;}
+.rms{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.rmsb{padding:10px;border-radius:7px;background:#f9fafb;border:1px solid var(--pb);}
+.rmsbn{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--tm);margin-bottom:2px;}
+.rmsbv{font-size:20px;font-weight:700;}
+.rmsbv.g{color:var(--green);}
+.rmsbv.o{color:var(--orange);}
+.rmsbv.r{color:var(--red);}
+.rml{margin-bottom:14px;}
+.rmlt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.rmlt.g{color:var(--green);}
+.rmlt.r{color:var(--red);}
+.rmli{display:flex;align-items:flex-start;gap:6px;padding:3px 0;font-size:11.5px;color:var(--text);}
+.rmac{display:flex;gap:9px;padding-top:12px;border-top:1px solid var(--pb);}
+.rma{flex:1;padding:9px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--ib);background:#fff;color:var(--text);transition:opacity .15s;}
+.rma.pr{background:var(--green);border-color:var(--green);color:#fff;}
+.rma:hover{opacity:.8;}
+
+/* What's new modal */
+#wm{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;}
+#wm.open{display:flex;}
+.wmc{background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.2);}
+.wmch{padding:14px 18px;border-bottom:1px solid var(--pb);display:flex;align-items:center;justify-content:space-between;}
+.wmct{font-size:14px;font-weight:700;color:var(--text);}
+.wmcx{background:none;border:none;font-size:17px;cursor:pointer;color:var(--tm);}
+.wmcb{padding:14px 18px;}
+.wmi{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #f3f4f6;}
+.wmi:last-child{border-bottom:none;}
+.wmd{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px;}
+.wmt{font-size:12px;color:var(--text);line-height:1.4;}
+.wmt strong{font-weight:600;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TOP HEADER -->
+<header id="hdr">
+  <div class="hdr-left">
+    <span class="hdr-badge">Pasado</span>
+    <div>
+      <div class="hdr-title">SEO Checker <strong>V2</strong></div>
+      <div class="hdr-sub">— developed by Joshua Nuñez</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="hdr-btn ol" id="btn-clear">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
+      Clear All
+    </button>
+    <button class="hdr-btn pr" id="btn-analyze">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>
+      Analyze Content
+    </button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside id="sb">
+  <div class="sb-brand"></div>
+  <div class="sb-acts"></div>
+  <nav class="sb-nav">
+    <div class="ni active" data-nav="overview">
+      <svg viewBox="0 0 14 14" fill="currentColor"><rect x="1" y="1" width="5" height="5" rx="1"/><rect x="8" y="1" width="5" height="5" rx="1"/><rect x="1" y="8" width="5" height="5" rx="1"/><rect x="8" y="8" width="5" height="5" rx="1"/></svg>
+      Overview
+    </div>
+    <div class="ni" data-nav="issues">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2L13 12H1L7 2z"/><path d="M7 6v3M7 11v.4"/></svg>
+      Issues <span class="nbadge r" id="bi">0</span>
+    </div>
+    <div class="ni" data-nav="opportunities">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M7 1.5l1.4 4.2H13L9.3 8.5l1.4 4.2L7 10.2l-3.7 2.5 1.4-4.2L1 5.7h4.6L7 1.5z"/></svg>
+      Opportunities <span class="nbadge o" id="bo">0</span>
+    </div>
+    <div class="ni" data-nav="seo">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M10 10l3 3"/></svg>
+      SEO
+    </div>
+    <div class="ni" data-nav="readability">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.5"/><circle cx="7" cy="7" r="2.5"/></svg>
+      Readability
+    </div>
+    <div class="ni" data-nav="aeo">
+      <svg viewBox="0 0 14 14" fill="currentColor"><path d="M8 1.5L5 7h3.5L6.5 12.5 12 6.5H8.5L8 1.5z"/></svg>
+      AEO
+    </div>
+    <div class="ni" data-nav="eeat">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1L12.5 3.5v4.5C12.5 11 7 13 7 13S1.5 11 1.5 8V3.5L7 1z"/><path d="M4.5 7l2 2 3-3"/></svg>
+      EEAT
+    </div>
+    <div class="ni" data-nav="links">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5.5 8.5a3 3 0 004.2 0l1.5-1.5a3 3 0 00-4.2-4.2L6 3.8M8.5 5.5a3 3 0 00-4.2 0L2.8 7a3 3 0 004.2 4.2L8 10.2"/></svg>
+      Links
+    </div>
+    <div class="ni" data-nav="settings">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="2"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M3 3l1 1M10 10l1 1M11 3l-1 1M4 10l-1 1"/></svg>
+      Settings
+    </div>
+  </nav>
+  <div class="sb-bot">
+    <button class="sb-rpt" id="btn-report">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="1" width="10" height="12" rx="1.5"/><path d="M4 4h6M4 7h6M4 10h3"/></svg>
+      Generate Report
+    </button>
+    <div class="sb-summ" id="btn-wn">
+      <div class="sb-st"><span class="sb-si">✦</span><span class="sb-sn">New in V2</span><span class="sb-nb">New</span></div>
+      <div class="sb-sl">See what's improved →</div>
+    </div>
+  </div>
+</aside>
+
+<!-- EDITOR -->
+<main id="em">
+  <div class="ec">
+    <div class="fgs">
+      <div class="fg">
+        <div class="fh"><label class="lbl" for="fkp">Focus Keyphrase</label><span class="ctr" id="ckp">0 / 60</span></div>
+        <input class="fi" type="text" id="fkp" placeholder="e.g. roof repair vs replacement">
+        <div class="fbar"><div class="fbar-f" id="bkp" style="width:0%"></div></div>
+      </div>
+      <div class="fgr">
+        <div class="fg">
+          <div class="fh"><label class="lbl" for="ftt">SEO Title</label><span class="ctr" id="ctt">0 / 60</span></div>
+          <input class="fi" type="text" id="ftt" placeholder="Your SEO title here...">
+          <div class="fbar"><div class="fbar-f" id="btt" style="width:0%"></div></div>
+        </div>
+        <div class="fg">
+          <div class="fh"><label class="lbl" for="furl">Website URL</label></div>
+          <input class="fi" type="text" id="furl" placeholder="https://yoursite.com">
+          <div id="urls"></div>
+        </div>
+      </div>
+      <div class="fg">
+        <div class="fh"><label class="lbl" for="fmd">Meta Description</label><span class="ctr" id="cmd">0 / 156</span></div>
+        <textarea class="fi" id="fmd" placeholder="Write your meta description..."></textarea>
+        <div class="fbar"><div class="fbar-f" id="bmd" style="width:0%"></div></div>
+      </div>
+      <div class="fg">
+        <div class="fh"><label class="lbl" for="fsl">URL Slug</label></div>
+        <input class="fi" type="text" id="fsl" placeholder="your-article-slug">
+      </div>
+      <div class="fg">
+        <div class="fh">
+          <label class="lbl" for="fh1">H1 Title <span class="lnote">(what appears on the page)</span></label>
+          <span class="ctr" id="ch1">0 / 70</span>
+        </div>
+        <input class="fi" type="text" id="fh1" placeholder="Your article H1 heading...">
+        <div class="fbar"><div class="fbar-f" id="bh1" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="fh" style="margin:10px 0 6px;">
+      <span class="lbl">Article Body</span>
+    </div>
+    <div id="tb">
+      <select class="tb-s" id="tbfmt"><option value="p">Paragraph</option><option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="h3">Heading 3</option><option value="blockquote">Quote</option></select>
+      <div class="tb-sp"></div>
+      <button class="tbb" title="Bold (Ctrl+B)" onclick="fmt('bold')"><svg viewBox="0 0 12 12"><text x="2" y="10" font-size="10" font-weight="900" font-family="serif" fill="currentColor">B</text></svg></button>
+      <button class="tbb" title="Italic (Ctrl+I)" onclick="fmt('italic')"><svg viewBox="0 0 12 12"><text x="2.5" y="10" font-size="10" font-style="italic" font-family="serif" fill="currentColor">I</text></svg></button>
+      <div class="tb-sp"></div>
+      <button class="tbb" title="Bullet list" onclick="fmt('insertUnorderedList')"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="2" cy="3" r=".7" fill="currentColor"/><circle cx="2" cy="6.5" r=".7" fill="currentColor"/><circle cx="2" cy="10" r=".7" fill="currentColor"/><path d="M4.5 3h7M4.5 6.5h7M4.5 10h7"/></svg></button>
+      <button class="tbb" title="Numbered list" onclick="fmt('insertOrderedList')"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 2.5h1v3M1.5 5.5h2"/><path d="M1.5 8.5c0-1 2-1 2 0s-2 1-2 2h2" stroke-linejoin="round"/><path d="M4.5 3.5h7M4.5 7h7M4.5 10.5h7"/></svg></button>
+      <div class="tb-sp"></div>
+      <button class="tbb" title="Insert link" id="tbl"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M5 8a3 3 0 004.2 0l1.5-1.5a3 3 0 00-4.2-4.2L5.5 3.3M8 5a3 3 0 00-4.2 0L2.3 6.5a3 3 0 004.2 4.2L7.5 9.7"/></svg></button>
+      <button class="tbb" title="Insert table" id="tbt"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="11" height="11" rx="1"/><path d="M1 4.5h11M1 8h11M5 4.5v7M9 4.5v7" stroke-linecap="round"/></svg></button>
+      <div class="tb-sp"></div>
+      <button class="tbb" title="Clear formatting" onclick="fmt('removeFormat')"><svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M9 2L4 11M2 11h5M11 2L6 11"/></svg></button>
+    </div>
+    <div id="eb" contenteditable="true" data-ph="Paste your article here from Google Docs — headings, bold, and links are preserved automatically."></div>
+    <div id="es">
+      <span>Words: <span class="sv" id="stw">0</span></span>
+      <span class="ss">|</span>
+      <span>Characters: <span class="sv" id="stc">0</span></span>
+      <span class="ss">|</span>
+      <span>Headings: <span class="sv" id="sth">0</span></span>
+      <span class="ss">|</span>
+      <span>Paragraphs: <span class="sv" id="stp">0</span></span>
+      <span class="ss">|</span>
+      <span>Reading Time: <span class="sv" id="str">0 min</span></span>
+      <span class="asv pn" id="asv">Not saved</span>
+    </div>
+  </div>
+</main>
+
+<!-- RIGHT PANEL -->
+<aside id="rp">
+  <div id="scs">
+    <div class="sc-hd">
+      <span class="sc-t">Content Score</span>
+      <span style="font-size:10.5px;color:var(--tm);" id="sclbl">Click Analyze to score</span>
+    </div>
+    <div class="sc-sb">
+      <div class="gw">
+        <svg class="gsv" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="40" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+          <circle id="gfg" cx="48" cy="48" r="40" fill="none" stroke-width="8" stroke-linecap="round" stroke="#e5e7eb" style="transform:rotate(-90deg);transform-origin:48px 48px;stroke-dasharray:251.2;stroke-dashoffset:251.2;transition:stroke-dashoffset .6s,stroke .4s;"/>
+        </svg>
+        <div class="gt"><span class="gn" id="gn">—</span><span class="gd">/100</span></div>
+      </div>
+      <div class="cbs">
+        <div class="cbr"><div class="cbh"><span class="cbn">SEO</span><span class="cbs2" id="csc-s">—</span></div><div class="cbt"><div class="cbf" id="cb-s" style="width:0%;background:var(--blue)"></div></div></div>
+        <div class="cbr"><div class="cbh"><span class="cbn">Readability</span><span class="cbs2" id="csc-r">—</span></div><div class="cbt"><div class="cbf" id="cb-r" style="width:0%;background:var(--purple)"></div></div></div>
+        <div class="cbr"><div class="cbh"><span class="cbn">AEO</span><span class="cbs2" id="csc-a">—</span></div><div class="cbt"><div class="cbf" id="cb-a" style="width:0%;background:var(--orange)"></div></div></div>
+        <div class="cbr"><div class="cbh"><span class="cbn">EEAT</span><span class="cbs2" id="csc-e">—</span></div><div class="cbt"><div class="cbf" id="cb-e" style="width:0%;background:var(--green)"></div></div></div>
+      </div>
+    </div>
+    <div class="gl" id="gl">Analyze your content to get a score</div>
+  </div>
+  <div id="pts">
+    <button class="pt active" data-tab="overview">Overview</button>
+    <button class="pt" data-tab="seo">SEO</button>
+    <button class="pt" data-tab="readability">Readability</button>
+    <button class="pt" data-tab="aeo">AEO</button>
+    <button class="pt" data-tab="eeat">EEAT</button>
+    <button class="pt" data-tab="links">Links</button>
+    <button class="pt" data-tab="settings">Settings</button>
+  </div>
+  <div id="pv-overview" class="pv active"><div class="nr"><div class="nri">📋</div><div class="nrt">Click <strong>Analyze Content</strong><br>to see your score and priorities.</div></div></div>
+  <div id="pv-seo" class="pv"><div class="nr"><div class="nri">🔍</div><div class="nrt">Run analysis to see SEO checks.</div></div></div>
+  <div id="pv-readability" class="pv"><div class="nr"><div class="nri">📖</div><div class="nrt">Run analysis to see readability checks.</div></div></div>
+  <div id="pv-aeo" class="pv"><div class="nr"><div class="nri">⚡</div><div class="nrt">Run analysis to see AEO checks.</div></div></div>
+  <div id="pv-eeat" class="pv"><div class="nr"><div class="nri">🛡️</div><div class="nrt">Run analysis to see EEAT checks.</div></div></div>
+  <div id="pv-links" class="pv"><div class="nr"><div class="nri">🔗</div><div class="nrt">Run analysis to see link details.</div></div></div>
+  <div id="pv-settings" class="pv">
+    <div class="sets">
+      <div class="sett">Settings</div>
+      <span class="setl">Article Template</span>
+      <div class="setd">Adjusts minimum word count and scoring thresholds to match your content type.</div>
+      <select class="setsel" id="set-tpl">
+        <option value="blog">Blog Post (300+ words)</option>
+        <option value="longform">Long-Form Guide (1500+ words)</option>
+        <option value="review">Product Review (500+ words)</option>
+        <option value="news">News Article (200+ words)</option>
+        <option value="local">Local SEO Page (300+ words)</option>
+        <option value="howto">How-To Guide (500+ words)</option>
+      </select>
+    </div>
+    <div class="pps">
+      <div class="ppt">Pre-Publish Checklist</div>
+      <div class="ppi"><input type="checkbox" id="pc1"><label for="pc1">Proofread out loud</label></div>
+      <div class="ppi"><input type="checkbox" id="pc2"><label for="pc2">Added at least one image or visual</label></div>
+      <div class="ppi"><input type="checkbox" id="pc3"><label for="pc3">Checked all links work correctly</label></div>
+      <div class="ppi"><input type="checkbox" id="pc4"><label for="pc4">Added expert quote or stat from credible source</label></div>
+      <div class="ppi"><input type="checkbox" id="pc5"><label for="pc5">Reviewed meta title and description</label></div>
+      <div class="ppi"><input type="checkbox" id="pc6"><label for="pc6">Confirmed article matches search intent</label></div>
+      <div class="ppi"><input type="checkbox" id="pc7"><label for="pc7">Internal links added to related content</label></div>
+    </div>
+  </div>
+</aside>
+</div>
+
+<!-- REPORT MODAL -->
+<div id="rm"><div class="rmc"><div class="rmch"><span class="rmct">📊 Content Score Card</span><button class="rmcx" id="rmx">✕</button></div><div class="rmcb" id="rmcb"></div></div></div>
+
+<!-- WHAT'S NEW MODAL -->
+<div id="wm"><div class="wmc">
+  <div class="wmch"><span class="wmct">✦ What's New in V2</span><button class="wmcx" id="wmx">✕</button></div>
+  <div class="wmcb">
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>H1 field</strong> — Separate H1 input now checked in SEO analysis alongside SEO title</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Website URL saved locally</strong> — Enables accurate internal vs external link detection</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Rich text toolbar</strong> — Format with H1–H3, bold, italic, lists, links, and tables</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>AEO checks</strong> — 7 new checks for Answer Engine Optimization (ChatGPT, Perplexity, AI Overview)</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>EEAT checks</strong> — 6 trust signal checks based on Google's EEAT framework</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Content Score gauge</strong> — Overall + 4 category scores with visual progress bars</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Flesch Reading Ease</strong> — Visual gauge showing your content's readability level (target: 60–70)</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Power Words Detector</strong> — Counts and highlights strong vs filler words</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Generate Report</strong> — Printable score card with top issues and wins</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Auto-save</strong> — Content saved to browser storage every 2 minutes</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Article Template Presets</strong> — Scoring thresholds adapt to your content type</div></div>
+    <div class="wmi"><div class="wmd"></div><div class="wmt"><strong>Pre-Publish Checklist</strong> — Manual quality gate in Settings before submitting to editor</div></div>
+  </div>
+</div></div>
+<script>
+// ════════════════════════════════════════
+// WORD LISTS
+// ════════════════════════════════════════
+const TW_P=["without a doubt","with this in mind","up to the present time","under those circumstances","to summarize","to sum up","to start with","to rephrase it","to paraphrase","to illustrate","to enumerate","to emphasize","to demonstrate","to conclude","to clarify","to begin with","that is to say","so that","seeing that","prior to","owing to","on the whole","on the other hand","on the contrary","not to mention","most importantly","last but not least","just as","it follows that","in turn","in this situation","in the same way","in the meantime","in the first place","in the final analysis","in the end","in summary","in spite of","in short","in particular","in other words","in order to","in light of","in fact","in essence","in either case","in effect","in detail","in contrast","in conclusion","in case","in any event","in any case","in addition","given these points","given that","for this reason","for the most part","for instance","for example","first of all","even though","even so","even if","due to","despite this","compared with","by the same token","by and large","by all means","as well as","as soon as","as opposed to","as long as","as an illustration","as a result","all things considered","all in all","after that","after all","above all","what's more","to that end","to this end","summing up","such as","so as to"];
+const TW_W=["additionally","admittedly","afterward","also","although","and","another","as","basically","because","besides","but","certainly","chiefly","comparatively","consequently","contrarily","conversely","correspondingly","despite","different","due","earlier","either","else","equally","especially","even","eventually","evidently","except","exclusively","finally","first","firstly","following","for","formerly","fourth","further","furthermore","given","hence","henceforth","however","importantly","indeed","instead","later","likewise","mainly","meanwhile","moreover","namely","nevertheless","next","nonetheless","nor","notably","notwithstanding","now","obviously","once","only","or","otherwise","overall","particularly","plus","previously","rather","regardless","secondly","separately","similarly","since","so","soon","specifically","still","subsequently","such","then","thereafter","therefore","third","thirdly","though","thus","together","typically","ultimately","unless","until","usually","whenever","whereas","whether","while","yet","alternatively","accordingly","undoubtedly","initially"];
+const IRR=new Set(["abided","arisen","awoken","beaten","become","begun","bent","bound","bitten","bled","blown","broken","brought","built","burnt","burned","bought","caught","chosen","come","cost","cut","dealt","dug","done","drawn","dreamt","dreamed","drunk","driven","eaten","fallen","felt","fought","found","flown","forgotten","forgiven","frozen","gotten","given","gone","grown","hung","had","heard","hidden","hit","held","hurt","kept","known","laid","led","left","lent","let","lain","lit","lost","made","meant","met","paid","put","read","ridden","rung","risen","run","said","seen","sold","sent","set","shaken","shown","shrunk","shut","sung","sunk","sat","slept","spoken","spent","spun","stood","stolen","stuck","struck","sworn","swum","taken","taught","torn","told","thought","thrown","understood","woken","worn","won","written","been"]);
+const BEV=new Set(["am","is","are","was","were","be","been","being"]);
+const PW=["proven","guaranteed","exclusive","instantly","discover","results","free","new","save","easy","best","complete","ultimate","essential","expert","tested","effective","trusted","step-by-step","exact","boost","master","powerful","fast","simple","critical","smart","comprehensive","definitive","actionable","insider","breakthrough","remarkable","outstanding","exceptional","superior","premium","professional","reliable","accurate","precise","detailed","thorough","advanced","innovative","surprising","essential","unbeatable"];
+const WW=["very","really","just","quite","basically","actually","literally","honestly","simply","maybe","perhaps","things","stuff","a lot","sort of","kind of","you know","in order to","due to the fact","it is important to note","needless to say","as a matter of fact","for all intents and purposes","at the end of the day"];
+const AD=["wikipedia.org",".gov",".edu","nih.gov","cdc.gov","who.int","mayoclinic.org","healthline.com","webmd.com","reuters.com","apnews.com","bbc.com","nytimes.com","theguardian.com","forbes.com","harvard.edu","stanford.edu","mit.edu","nature.com","sciencedirect.com","pubmed.ncbi.nlm.nih.gov","ncbi.nlm.nih.gov"];
+const CB=["shocking","you won't believe","secret","they don't want you to know","mind-blowing","jaw-dropping","insane","unbelievable","will blow your mind","can't believe","amazing trick","doctors hate","one weird trick","this changes everything","never seen before"];
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let RES={r:[],s:[],a:[],e:[]},SC={r:0,s:0,a:0,e:0,ov:0};
+let analyzed=false,activeEye=null,flScore=0,pwC={p:0,w:0},pwE={p:[],w:[]};
+
+// ════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════
+const cw=t=>(t||"").trim().split(/\s+/).filter(w=>w.length>0).length;
+const tx=el=>(el.innerText||el.textContent||"").trim();
+
+function splitS(text){
+  if(!text||!text.trim())return[];
+  let t=text.replace(/\b(Mr|Mrs|Ms|Dr|Prof|Sr|Jr|vs|etc|e\.g|i\.e)\./gi,m=>m.replace(".","§"));
+  t=t.replace(/(\d+)\./g,"$1§");
+  return t.split(/(?<=[.!?])\s+(?=[A-ZÀ-Ú"'(])|(?<=[.!?])\s*$/).map(s=>s.replace(/§/g,".").trim()).filter(s=>s.length>3);
+}
+
+function kpWords(kp){
+  const fw=new Set(["a","an","the","and","or","but","in","on","at","to","for","of","with","by","from","is","are","was","were","be","been","have","has","do","does","did","will","would","could","should","may","might","can","my","your","his","her","its","our","their","this","that","i","we","you","he","she","they"]);
+  return(kp||"").toLowerCase().split(/\s+/).filter(w=>w.length>0&&!fw.has(w));
+}
+
+function isPass(s){
+  const ws=s.toLowerCase().replace(/[^a-z\s]/g," ").split(/\s+/).filter(Boolean);
+  const bi=ws.findIndex(w=>BEV.has(w));
+  if(bi===-1)return false;
+  return ws.slice(bi+1,bi+5).some(w=>IRR.has(w)||(w.length>3&&w.endsWith("ed")));
+}
+
+function hasTW(s){
+  const low=s.toLowerCase();
+  const padded=" "+low.replace(/[^a-z\s']/g," ")+" ";
+  for(const ph of TW_P){if(padded.includes(" "+ph+" ")||padded.includes(" "+ph+",")||low.startsWith(ph+" "))return true;}
+  const ws=padded.split(/\s+/).filter(Boolean);
+  return TW_W.some(tw=>ws.includes(tw));
+}
+
+function syl(w){
+  w=w.toLowerCase().replace(/[^a-z]/g,"");
+  if(w.length<=3)return 1;
+  w=w.replace(/(?:[^laeiouy]es|[^laeiouy]ed|[aeiouy]$)/,"");
+  const m=w.match(/[aeiouy]{1,2}/g);
+  return m?Math.max(1,m.length):1;
+}
+
+function flCalc(text){
+  const ss=splitS(text);if(!ss.length)return 0;
+  const ws=text.trim().split(/\s+/).filter(w=>w.length>0);if(!ws.length)return 0;
+  const aws=ws.length/ss.length;
+  const asyl=ws.reduce((a,w)=>a+syl(w),0)/ws.length;
+  return Math.max(0,Math.min(100,206.835-(1.015*aws)-(84.6*asyl)));
+}
+
+function flLbl(s){
+  if(s>=90)return"Very Easy (5th grade)";if(s>=80)return"Easy (6th grade)";
+  if(s>=70)return"Fairly Easy (7th grade)";if(s>=60)return"Standard (8th–9th)";
+  if(s>=50)return"Fairly Difficult (College prep)";if(s>=30)return"Difficult (College)";
+  return"Very Difficult (Professional)";
+}
+
+function fw1(s){return(s||"").trim().toLowerCase().split(/\s+/)[0]?.replace(/[^a-z]/g,"")||"";}
+
+function gByEl(items){
+  const m=new Map();
+  items.forEach(i=>{if(!m.has(i.el))m.set(i.el,[]);m.get(i.el).push(i.text);});
+  return m;
+}
+
+function getDom(url){try{return new URL(url.startsWith("http")?url:"https://"+url).hostname;}catch(e){return url.toLowerCase();}}
+function siteUrl(){return(document.getElementById("furl").value||"").trim().replace(/\/+$/,"");}
+function isInt(href,su){
+  if(!href)return false;if(href.startsWith("/"))return true;if(!href.startsWith("http"))return true;
+  if(!su)return false;const sd=getDom(su);
+  try{const d=getDom(href);return d===sd||d.endsWith("."+sd);}catch(e){return false;}
+}
+function isExt(href,su){
+  if(!href||!href.startsWith("http"))return false;if(!su)return true;return!isInt(href,su);
+}
+
+function getED(){
+  const ed=document.getElementById("eb");
+  const INL=new Set(["span","strong","em","b","i","a","br","u","s","sub","sup","code","mark"]);
+  const BLK=new Set(["p","li","blockquote","pre","dd","dt"]);
+  const SUB=new Set(["h2","h3"]);
+  const SKP=new Set(["h1","h4","h5","h6","script","style"]);
+  const paras=[],subs=[],sents=[];
+  function walk(n){
+    Array.from(n.childNodes).forEach(c=>{
+      if(c.nodeType!==1)return;
+      const tag=c.tagName.toLowerCase();
+      if(SUB.has(tag)){subs.push(c);}
+      else if(SKP.has(tag)){}
+      else if(BLK.has(tag)){const t=tx(c);if(t){paras.push({el:c,text:t,wc:cw(t)});splitS(t).forEach(s=>{if(s.length>3)sents.push({el:c,text:s});});}}
+      else if(!INL.has(tag)){walk(c);}
+    });
+  }
+  walk(ed);
+  const ft=tx(ed);
+  return{ed,paras,subs,sents,links:Array.from(ed.querySelectorAll("a")),imgs:Array.from(ed.querySelectorAll("img")),ft,tw:cw(ft)};
+}
+
+function mkR(id,title,color,score,msg,pts,hl){return{id,title,color,score,msg,pts,canHL:!!hl,hl:hl||null};}
+
+// ════════════════════════════════════════
+// HIGHLIGHTS
+// ════════════════════════════════════════
+function clrHL(){
+  document.querySelectorAll(".yhiel").forEach(el=>el.classList.remove("yhiel"));
+  document.querySelectorAll("[data-orig]").forEach(el=>{el.innerHTML=el.dataset.orig;delete el.dataset.orig;});
+  if(activeEye){activeEye.classList.remove("on");activeEye=null;}
+}
+function hlEls(els){if(!els||!els.length)return;els.forEach(e=>e.classList.add("yhiel"));els[0].scrollIntoView({behavior:"smooth",block:"center"});}
+function hlSents(byEl){
+  let first=null;
+  byEl.forEach((ss,el)=>{
+    if(el.dataset.orig!==undefined)return;
+    el.dataset.orig=el.innerHTML;
+    let html=el.innerHTML;
+    ss.forEach(s=>{
+      const sc=s.trim();if(!sc||sc.length<3)return;
+      const i=html.indexOf(sc);
+      if(i>=0)html=html.substring(0,i)+'<span class="yhi">'+sc+"</span>"+html.substring(i+sc.length);
+      else{const li=html.toLowerCase().indexOf(sc.toLowerCase());if(li>=0)html=html.substring(0,li)+'<span class="yhi">'+html.substring(li,li+sc.length)+"</span>"+html.substring(li+sc.length);}
+    });
+    el.innerHTML=html;if(!first)first=el;
+  });
+  if(first)first.scrollIntoView({behavior:"smooth",block:"center"});
+}
+function actEye(btn,fn){if(activeEye===btn){clrHL();return;}clrHL();activeEye=btn;btn.classList.add("on");fn();}
+
+// ════════════════════════════════════════
+// READABILITY CHECKS
+// ════════════════════════════════════════
+function chkSL(sents){
+  const total=sents.length;if(!total)return null;
+  const lng=sents.filter(s=>cw(s.text)>20);
+  const pct=Math.round((lng.length/total)*100);
+  const c=pct<=25?"green":pct<=30?"orange":"red";
+  return mkR("sl","Sentence length",c,pct<=25?2:pct<=30?1:0,pct<=25?"Good — less than 25% of sentences are over 20 words.":`${lng.length} sentences (${pct}%) exceed 20 words. Aim for ≤25%.`,2,lng.length?()=>hlSents(gByEl(lng)):null);
+}
+function chkPL(paras){
+  const vl=paras.filter(p=>p.wc>200),lo=paras.filter(p=>p.wc>150&&p.wc<=200);
+  if(vl.length)return mkR("pl","Paragraph length","red",0,`${vl.length} paragraph(s) exceed 200 words. Shorten them.`,2,()=>hlEls(vl.map(p=>p.el)));
+  if(lo.length)return mkR("pl","Paragraph length","orange",1,`${lo.length} paragraph(s) are 150–200 words. Consider shortening.`,2,()=>hlEls(lo.map(p=>p.el)));
+  return mkR("pl","Paragraph length","green",2,"All paragraphs are within a good length. Great!",2,null);
+}
+function chkPS(paras){
+  const bad=paras.filter(p=>splitS(p.text).length>4);
+  if(bad.length)return mkR("ps","Paragraph sentences","orange",1,`${bad.length} paragraph(s) have more than 4 sentences. Aim for 2–3.`,2,()=>hlEls(bad.map(p=>p.el)));
+  return mkR("ps","Paragraph sentences","green",2,"Paragraph sentence counts look good (under 4 per paragraph).",2,null);
+}
+function chkSH(ed,tw){
+  const INL=new Set(["span","strong","em","b","i","a","br","u","s","sub","sup","code"]);
+  const BLK=new Set(["p","li","blockquote","pre","dd","dt"]);
+  const SUB=new Set(["h2","h3"]);
+  const SKP=new Set(["h1","h4","h5","h6","script","style"]);
+  const ord=[];
+  function walk(n){
+    Array.from(n.childNodes).forEach(c=>{
+      if(c.nodeType!==1)return;const tag=c.tagName.toLowerCase();
+      if(SUB.has(tag)){ord.push({t:"s",el:c});}
+      else if(SKP.has(tag)){}
+      else if(BLK.has(tag)){const w=cw(tx(c));if(w>0)ord.push({t:"b",el:c,wc:w});}
+      else if(!INL.has(tag)){walk(c);}
+    });
+  }
+  walk(ed);
+  const secs=[];let cur={wc:0,els:[]};
+  ord.forEach(i=>{if(i.t==="s"){if(cur.wc>0)secs.push(cur);cur={wc:0,els:[]};}else{cur.wc+=i.wc;cur.els.push(i.el);}});
+  if(cur.wc>0)secs.push(cur);
+  const hasSub=ord.some(i=>i.t==="s");
+  const vl=secs.filter(s=>s.wc>350),med=secs.filter(s=>s.wc>300&&s.wc<=350);
+  if(!hasSub){if(tw<=300)return mkR("sh","Subheading distribution","green",2,"Short text — subheadings not required.",2,null);return mkR("sh","Subheading distribution","red",0,"No subheadings — add one every 300 words for scannability.",2,null);}
+  if(vl.length)return mkR("sh","Subheading distribution","red",0,`${vl.length} section(s) exceed 350 words without a subheading.`,2,()=>hlEls(vl.flatMap(s=>s.els)));
+  if(med.length)return mkR("sh","Subheading distribution","orange",1,`${med.length} section(s) are 300–350 words. Consider adding a subheading.`,2,()=>hlEls(med.flatMap(s=>s.els)));
+  return mkR("sh","Subheading distribution","green",2,"Subheadings are well distributed throughout the content.",2,null);
+}
+function chkCS(sents){
+  const byEl=new Map();
+  sents.forEach(s=>{if(!byEl.has(s.el))byEl.set(s.el,[]);byEl.get(s.el).push(s);});
+  const found=[];
+  byEl.forEach(ss=>{
+    for(let i=0;i<ss.length-2;i++){
+      const w0=fw1(ss[i].text),w1=fw1(ss[i+1].text),w2=fw1(ss[i+2].text);
+      if(w0&&w0.length>1&&w0===w1&&w1===w2){const g=[ss[i],ss[i+1],ss[i+2]];let j=i+3;while(j<ss.length&&fw1(ss[j].text)===w0){g.push(ss[j]);j++;}found.push(g);i=j-1;}
+    }
+  });
+  if(found.length)return mkR("cs","Consecutive sentences","red",0,`${found[0].length} consecutive sentences start with the same word. Vary your openings.`,2,()=>hlSents(gByEl(found[0])));
+  return mkR("cs","Consecutive sentences","green",2,"No repetitive sentence beginnings found. That's great!",2,null);
+}
+function chkPV(sents){
+  const total=sents.length;if(!total)return null;
+  const pv=sents.filter(s=>isPass(s.text));
+  const pct=Math.round((pv.length/total)*100);
+  const c=pct<=10?"green":pct<=15?"orange":"red";
+  return mkR("pv","Passive voice",c,pct<=10?2:pct<=15?1:0,pct<=10?"You're not overusing passive voice. Well done!":`${pv.length} sentences (${pct}%) use passive voice. Keep it under 10%.`,2,pv.length?()=>hlSents(gByEl(pv)):null);
+}
+function chkTW(sents){
+  const total=sents.length;if(!total)return null;
+  const tw=sents.filter(s=>hasTW(s.text));
+  const no=sents.filter(s=>!hasTW(s.text));
+  const pct=Math.round((tw.length/total)*100);
+  const wc=sents.reduce((a,s)=>a+cw(s.text),0);
+  if(wc<200)return mkR("tw","Transition words","green",2,tw.length?"Transition words found. Well done!":"Text is short — transition words not required.",2,null);
+  const c=pct>=30?"green":pct>=20?"orange":"red";
+  return mkR("tw","Transition words",c,pct>=30?2:pct>=20?1:0,pct>=30?`${pct}% of sentences use transition words. Great!`:pct>=20?`Only ${pct}% use transitions. Aim for 30%+.`:`Only ${pct}% use transitions. Add more.`,2,no.length?()=>hlSents(gByEl(no)):null);
+}
+
+// ════════════════════════════════════════
+// SEO CHECKS
+// ════════════════════════════════════════
+function chkKI(paras,kp){
+  const cws=kpWords(kp);
+  if(!kp.trim())return mkR("ki","Keyphrase in introduction","red",0,"Set a focus keyphrase first.",2,null);
+  if(!paras.length)return mkR("ki","Keyphrase in introduction","red",0,"Add content to the article body.",2,null);
+  const fp=paras[0],ft=tx(fp.el).toLowerCase();
+  if(!cws.every(w=>ft.includes(w)))return mkR("ki","Keyphrase in introduction","red",0,"Keyphrase not found in the first paragraph. Add it.",2,()=>hlEls([fp.el]));
+  const inOne=splitS(tx(fp.el)).some(s=>cws.every(w=>s.toLowerCase().includes(w)));
+  if(!inOne)return mkR("ki","Keyphrase in introduction","orange",1,"Keyphrase words found in intro but not in one sentence.",2,()=>hlEls([fp.el]));
+  return mkR("ki","Keyphrase in introduction","green",2,"Keyphrase appears naturally in the first paragraph!",2,null);
+}
+function chkKL(kp){
+  if(!kp.trim())return mkR("kl","Keyphrase length","red",0,"No focus keyphrase set.",2,null);
+  const l=kpWords(kp).length;
+  if(l>8)return mkR("kl","Keyphrase length","red",0,`Keyphrase has ${l} words — too long. Keep it under 4 content words.`,2,null);
+  if(l>=5)return mkR("kl","Keyphrase length","orange",1,`${l} content words — consider keeping it under 4.`,2,null);
+  return mkR("kl","Keyphrase length","green",2,"Keyphrase length is good.",2,null);
+}
+function chkKD(sents,kp){
+  if(!kp.trim())return mkR("kd","Keyphrase density","red",0,"Set a focus keyphrase.",2,null);
+  const cws=kpWords(kp);const allT=sents.map(s=>s.text).join(" ");const total=cw(allT);
+  if(total<10)return mkR("kd","Keyphrase density","red",0,"Add more content to analyze density.",2,null);
+  const m=sents.filter(s=>cws.every(w=>s.text.toLowerCase().includes(w)));
+  const d=total>0?(m.length*cws.length/total)*100:0;
+  if(total>=100){
+    if(d>4)return mkR("kd","Keyphrase density","red",0,`Density ${d.toFixed(1)}% — too high! Over-optimization risk.`,2,()=>hlSents(gByEl(m)));
+    if(d>3)return mkR("kd","Keyphrase density","red",0,`Density ${d.toFixed(1)}% — above 3%. Reduce keyphrase use.`,2,()=>hlSents(gByEl(m)));
+    if(d>=0.5)return mkR("kd","Keyphrase density","green",2,`Keyphrase density ${d.toFixed(1)}% — spot on!`,2,()=>hlSents(gByEl(m)));
+    return mkR("kd","Keyphrase density","red",0,`Density only ${d.toFixed(1)}%. Use keyphrase more naturally (aim 0.5–3%).`,2,null);
+  }
+  if(m.length>=1&&m.length<=2)return mkR("kd","Keyphrase density","green",2,`Keyphrase found ${m.length} time(s). Good for short text.`,2,()=>hlSents(gByEl(m)));
+  if(m.length>2)return mkR("kd","Keyphrase density","red",0,"Too many uses for such a short text.",2,()=>hlSents(gByEl(m)));
+  return mkR("kd","Keyphrase density","red",0,"Keyphrase not found in the content.",2,null);
+}
+function chkKT(v,kp){
+  if(!kp.trim()||!v.trim())return mkR("kt","Keyphrase in SEO title","red",0,kp.trim()?"Add an SEO title.":"Set a focus keyphrase.",2,null);
+  return kpWords(kp).every(w=>v.toLowerCase().includes(w))?mkR("kt","Keyphrase in SEO title","green",2,"Keyphrase found in SEO title. Well done!",2,null):mkR("kt","Keyphrase in SEO title","red",0,"Keyphrase not in SEO title. Fix that!",2,null);
+}
+function chkKH(v,kp){
+  if(!kp.trim()||!v.trim())return mkR("kh","Keyphrase in H1","red",0,kp.trim()?"Add an H1 title.":"Set a focus keyphrase.",2,null);
+  return kpWords(kp).every(w=>v.toLowerCase().includes(w))?mkR("kh","Keyphrase in H1","green",2,"Keyphrase found in H1 title. Well done!",2,null):mkR("kh","Keyphrase in H1","red",0,"Keyphrase not in H1 title. Fix that!",2,null);
+}
+function chkTW2(v){
+  if(!v.trim())return mkR("tw2","SEO title width","red",0,"Add an SEO title.",2,null);
+  const l=v.length;
+  if(l<=60)return mkR("tw2","SEO title width","green",2,"SEO title length is perfect (under 60 chars).",2,null);
+  if(l<=70)return mkR("tw2","SEO title width","orange",1,`SEO title is ${l} chars — slightly over 60. Trim it.`,2,null);
+  return mkR("tw2","SEO title width","red",0,`SEO title is ${l} chars — too long (max 60).`,2,null);
+}
+function chkMK(mv,kp){
+  if(!kp.trim()||!mv.trim())return mkR("mk","Keyphrase in meta description","red",0,"Add both a keyphrase and meta description.",2,null);
+  const cws=kpWords(kp);
+  if(!cws.every(w=>mv.toLowerCase().includes(w)))return mkR("mk","Keyphrase in meta description","red",0,"Keyphrase not in meta description. Fix that!",2,null);
+  return mkR("mk","Keyphrase in meta description","green",2,"Keyphrase found in meta description. Well done!",2,null);
+}
+function chkML(mv){
+  const l=mv.trim().length;
+  if(l===0)return mkR("ml","Meta description length","red",0,"No meta description. Add one!",2,null);
+  if(l>=120&&l<=156)return mkR("ml","Meta description length","green",2,"Meta description length is perfect (120–156 chars).",2,null);
+  if(l<120)return mkR("ml","Meta description length","orange",1,`Too short at ${l} chars. Aim for 120–156 chars.`,2,null);
+  return mkR("ml","Meta description length","orange",1,`Too long at ${l} chars. Keep under 156 chars.`,2,null);
+}
+function chkSG(sv,kp){
+  if(!kp.trim()||!sv.trim())return mkR("ks","Keyphrase in slug","red",0,kp.trim()?"Add a URL slug.":"Set a focus keyphrase.",2,null);
+  return kpWords(kp).every(w=>sv.toLowerCase().replace(/-/g," ").includes(w))?mkR("ks","Keyphrase in slug","green",2,"Keyphrase in URL slug. Well done!",2,null):mkR("ks","Keyphrase in slug","red",0,"Keyphrase not in URL slug. Fix that!",2,null);
+}
+function chkKSB(subs,kp,tw){
+  if(!kp.trim())return mkR("ksb","Keyphrase in subheadings","red",0,"Set a focus keyphrase.",2,null);
+  const cws=kpWords(kp);
+  if(!subs.length){if(tw<=300)return mkR("ksb","Keyphrase in subheadings","green",2,"No subheadings needed for short text.",2,null);return mkR("ksb","Keyphrase in subheadings","red",0,"No subheadings found. Add some!",2,null);}
+  const m=subs.filter(h=>cws.filter(w=>tx(h).toLowerCase().includes(w)).length>=Math.ceil(cws.length*0.5));
+  const pct=(m.length/subs.length)*100;
+  if(subs.length===1&&m.length===1)return mkR("ksb","Keyphrase in subheadings","green",2,"Subheading reflects the topic. Good job!",2,null);
+  if(pct>75)return mkR("ksb","Keyphrase in subheadings","red",0,"Over 75% of subheadings contain the keyphrase — over-optimization!",2,()=>hlEls(m));
+  if(pct>=30)return mkR("ksb","Keyphrase in subheadings","green",2,`${m.length}/${subs.length} subheadings contain the keyphrase. Good!`,2,null);
+  return mkR("ksb","Keyphrase in subheadings","red",0,"Not enough subheadings contain the keyphrase.",2,()=>hlEls(subs));
+}
+function chkTxtL(tw){
+  const tpl=document.getElementById("set-tpl").value;
+  const min=tpl==="longform"?1500:tpl==="news"?200:tpl==="howto"||tpl==="review"?500:300;
+  if(tw>=min)return mkR("tl","Text length","green",2,`${tw} words — meets the ${min}-word minimum. Good job!`,2,null);
+  if(tw>=min*0.67)return mkR("tl","Text length","orange",1,`${tw} words — just below the ${min}-word minimum.`,2,null);
+  return mkR("tl","Text length","red",0,`${tw} words — well below the ${min}-word minimum. Add more content.`,2,null);
+}
+function chkIL(links,su){
+  const int=links.filter(a=>isInt(a.getAttribute("href")||"",su));
+  const tpl=document.getElementById("set-tpl").value;
+  const need=tpl==="longform"?5:3;
+  if(int.length>=need)return mkR("il","Internal links","green",2,`${int.length} internal links. Great!`,2,null);
+  if(int.length>=1)return mkR("il","Internal links","orange",1,`Only ${int.length} internal link(s). Aim for ${need}+.`,2,null);
+  return mkR("il","Internal links","red",0,"No internal links. Add links to related content on your site.",2,null);
+}
+function chkEL(links,su){
+  const ext=links.filter(a=>isExt(a.getAttribute("href")||"",su));
+  return ext.length>=1?mkR("el","Outbound links","green",2,`${ext.length} outbound link(s). Good!`,2,null):mkR("el","Outbound links","red",0,"No outbound links. Link to at least one authoritative source.",2,null);
+}
+function chkCL(links,kp){
+  if(!kp.trim())return mkR("cl","Competing links","green",2,"No competing links found.",2,null);
+  const cws=kpWords(kp);const comp=links.filter(a=>cws.every(w=>tx(a).toLowerCase().includes(w)));
+  return comp.length?mkR("cl","Competing links","red",0,"A link uses your keyphrase as anchor text. Remove or change it.",2,()=>hlEls(comp)):mkR("cl","Competing links","green",2,"No competing links found. Nice!",2,null);
+}
+function chkIA(imgs){
+  if(!imgs.length)return null;
+  const bad=imgs.filter(i=>!i.getAttribute("alt")||i.getAttribute("alt").trim()==="");
+  return bad.length?mkR("ia","Image alt text","orange",1,`${bad.length} image(s) missing alt text. Add descriptive alt attributes.`,2,()=>hlEls(bad)):mkR("ia","Image alt text","green",2,"All images have alt text. Well done!",2,null);
+}
+
+// ════════════════════════════════════════
+// AEO CHECKS
+// ════════════════════════════════════════
+const QW=["who","what","when","where","why","how","which","can","does","do","is","are","should","could","would","will","have","has"];
+function chkAQ(subs){
+  const q=subs.filter(h=>{const t=tx(h).toLowerCase();return QW.some(w=>t.startsWith(w+" ")||t.includes(" "+w+" ")||t.endsWith("?"));});
+  return q.length>=1?mkR("aq","Question-based headings","green",2,`${q.length} subheading(s) phrased as questions. Great for AEO!`,2,null):mkR("aq","Question-based headings","red",0,"No question-based headings. Phrase some H2/H3s as questions for AEO.",2,null);
+}
+function chkAI(paras){
+  if(!paras.length)return mkR("ai","Direct answer in intro","red",0,"Add content to check.",2,null);
+  const w=paras[0].wc;
+  if(w>=40&&w<=100)return mkR("ai","Direct answer in intro","green",2,"First paragraph is concise (40–100 words). Great for AEO!",2,null);
+  if(w>100&&w<=150)return mkR("ai","Direct answer in intro","orange",1,`First paragraph is ${w} words. AI prefers 40–100 word intros.`,2,null);
+  if(w>0&&w<40)return mkR("ai","Direct answer in intro","orange",1,`First paragraph is only ${w} words. Aim for 40–100 words.`,2,null);
+  return mkR("ai","Direct answer in intro","red",0,`First paragraph is ${w} words — too long. Give a direct 40–100 word answer first.`,2,null);
+}
+function chkAF(subs){
+  const q=subs.filter(h=>{const t=tx(h).toLowerCase();return QW.some(w=>t.startsWith(w+" ")||t.includes(" "+w+" ")||t.endsWith("?"));});
+  if(q.length>=2)return mkR("af","FAQ structure","green",2,`${q.length} question-based headings — good FAQ structure!`,2,null);
+  if(q.length===1)return mkR("af","FAQ structure","orange",1,"Only 1 question heading. Add more for FAQ-style structure.",2,null);
+  return mkR("af","FAQ structure","red",0,"No FAQ structure found. Add question-based subheadings.",2,null);
+}
+function chkAP(paras){
+  if(!paras.length)return null;
+  const avg=paras.reduce((a,p)=>a+p.wc,0)/paras.length;
+  if(avg<=100)return mkR("ap","Concise paragraphs","green",2,`Avg paragraph: ${Math.round(avg)} words. Good for AI readability!`,2,null);
+  if(avg<=150)return mkR("ap","Concise paragraphs","orange",1,`Avg paragraph: ${Math.round(avg)} words. AI prefers under 100.`,2,null);
+  return mkR("ap","Concise paragraphs","red",0,`Avg paragraph: ${Math.round(avg)} words. Shorten for AI citation.`,2,null);
+}
+function chkAD(text){
+  const pat=/\b\w[\w\s]+\s(is a|is an|is the|are a|are the|refers to|means|is defined as|can be defined as)/i;
+  return pat.test(text)?mkR("ad","Definition present","green",2,"Definition sentence found. Great for AI answers!",2,null):mkR("ad","Definition present","orange",1,'No clear definition. Add "X is a..." or "X refers to..." for AEO.',2,null);
+}
+function chkAL(ed){
+  return ed.querySelector("ul,ol")?mkR("al","List present","green",2,"Lists found. Great for structured AI answers!",2,null):mkR("al","List present","orange",1,"No lists. Add bullet or numbered lists for better AEO.",2,null);
+}
+function chkAS(text){
+  return/\b\d+(\.\d+)?%|\b\d{4}\b|\b\d+\s*(million|billion|thousand|hundred)/i.test(text)?mkR("as","Stats or data cited","green",2,"Statistics or data found. Good for AI citations!",2,null):mkR("as","Stats or data cited","orange",1,"No stats found. Add numbers or percentages to support claims.",2,null);
+}
+
+// ════════════════════════════════════════
+// EEAT CHECKS
+// ════════════════════════════════════════
+function chkEF(text){
+  const pp=["i tested","i found","in my experience","we used","we tried","i noticed","we noticed","i've been","i have been","we've been","i recommend","in our experience","i personally","we personally","from my experience","from our experience","i discovered","we discovered","i've used","we've used"];
+  return pp.some(p=>text.toLowerCase().includes(p))?mkR("ef","First-person experience","green",2,"First-person experience signals found. Strong EEAT!",2,null):mkR("ef","First-person experience","red",0,'No first-person signals. Add phrases like "I tested" or "In my experience".',2,null);
+}
+function chkEA(links,su){
+  const ext=links.filter(a=>isExt(a.getAttribute("href")||"",su));
+  const auth=ext.filter(a=>{const h=a.getAttribute("href")||"";return AD.some(d=>h.includes(d));});
+  return auth.length>=1?mkR("ea","Authority links","green",2,`${auth.length} link(s) to authoritative sources. Good EEAT signal!`,2,null):mkR("ea","Authority links","red",0,"No authority links (.gov, .edu, Wikipedia). Add at least one.",2,null);
+}
+function chkES(text){
+  return/\b\d+(\.\d+)?%|\b\d+\s*(million|billion|thousand)/i.test(text)?mkR("es","Data or statistics cited","green",2,"Statistics found — shows research-backed content.",2,null):mkR("es","Data or statistics cited","red",0,"No statistics found. Add data to support claims.",2,null);
+}
+function chkED(tw){
+  if(tw>=600)return mkR("ed","Content depth","green",2,`${tw} words — strong EEAT depth signal.`,2,null);
+  if(tw>=300)return mkR("ed","Content depth","orange",1,`${tw} words — decent. 600+ words shows stronger expertise.`,2,null);
+  return mkR("ed","Content depth","red",0,`${tw} words — too thin. Aim for 600+ words.`,2,null);
+}
+function chkEC(links,su){
+  const ext=links.filter(a=>isExt(a.getAttribute("href")||"",su));
+  if(ext.length>=2)return mkR("ec","Citation count","green",2,`${ext.length} outbound links — good trust signal.`,2,null);
+  if(ext.length===1)return mkR("ec","Citation count","orange",1,"Only 1 outbound link. 2+ shows stronger trustworthiness.",2,null);
+  return mkR("ec","Citation count","red",0,"No outbound links. Add citations to improve trust.",2,null);
+}
+function chkEK(ed){
+  const hels=Array.from(ed.querySelectorAll("h1,h2,h3"));
+  const bad=hels.filter(h=>CB.some(w=>tx(h).toLowerCase().includes(w)));
+  return bad.length?mkR("ek","No clickbait in headings","red",0,`Clickbait detected in ${bad.length} heading(s). Remove sensationalist language.`,2,()=>hlEls(bad)):mkR("ek","No clickbait in headings","green",2,"No clickbait in headings. Good credibility signal!",2,null);
+}
+
+// ════════════════════════════════════════
+// POWER WORDS
+// ════════════════════════════════════════
+function chkPW(ed){
+  const text=tx(ed).toLowerCase();
+  const paras=Array.from(ed.querySelectorAll("p,li"));
+  pwC={p:0,w:0};pwE={p:[],w:[]};
+  PW.forEach(pw=>{if(text.includes(pw.toLowerCase()))pwC.p++;});
+  WW.forEach(ww=>{if(text.includes(ww.toLowerCase()))pwC.w++;});
+  paras.forEach(p=>{
+    const t=tx(p).toLowerCase();
+    if(PW.some(pw=>t.includes(pw.toLowerCase())))pwE.p.push(p);
+    if(WW.some(ww=>t.includes(ww.toLowerCase())))pwE.w.push(p);
+  });
+}
+
+// ════════════════════════════════════════
+// SCORING
+// ════════════════════════════════════════
+function calcSc(checks){
+  if(!checks.length)return 0;
+  const e=checks.filter(c=>c&&c.color==="green").length;
+  const o=checks.filter(c=>c&&c.color==="orange").length;
+  const total=checks.filter(c=>c).length;
+  return Math.round(((e*2+o*1)/(total*2))*100);
+}
+
+// ════════════════════════════════════════
+// ANALYSIS
+// ════════════════════════════════════════
+function runAnalysis(){
+  clrHL();
+  const kp=document.getElementById("fkp").value.trim();
+  const tt=document.getElementById("ftt").value.trim();
+  const sl=document.getElementById("fsl").value.trim();
+  const md=document.getElementById("fmd").value.trim();
+  const h1=document.getElementById("fh1").value.trim();
+  const su=siteUrl();
+  const {ed,paras,subs,sents,links,imgs,ft,tw}=getED();
+
+  const rC=[chkSL(sents),chkPL(paras),chkPS(paras),chkSH(ed,tw),chkCS(sents),chkPV(sents),chkTW(sents)].filter(Boolean);
+  const iaR=chkIA(imgs);
+  const sC=[chkKI(paras,kp),chkKL(kp),chkKD(sents,kp),chkKT(tt,kp),chkKH(h1,kp),chkTW2(tt),chkMK(md,kp),chkML(md),chkSG(sl,kp),chkKSB(subs,kp,tw),chkTxtL(tw),chkIL(links,su),chkEL(links,su),chkCL(links,kp),...(iaR?[iaR]:[])].filter(Boolean);
+  const aC=[chkAQ(subs),chkAI(paras),chkAF(subs),chkAP(paras),chkAD(ft),chkAL(ed),chkAS(ft)].filter(Boolean);
+  const eC=[chkEF(ft),chkEA(links,su),chkES(ft),chkED(tw),chkEC(links,su),chkEK(ed)].filter(Boolean);
+
+  RES={r:rC,s:sC,a:aC,e:eC};
+  SC.r=calcSc(rC);SC.s=calcSc(sC);SC.a=calcSc(aC);SC.e=calcSc(eC);
+  SC.ov=Math.round(SC.s*0.4+SC.r*0.3+SC.a*0.15+SC.e*0.15);
+  analyzed=true;flScore=ft.trim()?flCalc(ft):0;chkPW(ed);
+  renderAll();
+}
+
+// ════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════
+function renderAll(){
+  updGauge();updBars();updBadges();
+  renderOv();renderCL("pv-seo",RES.s,"SEO CHECKLIST");renderCL("pv-readability",RES.r,"READABILITY CHECKLIST");
+  renderAEO();renderEEAT();renderLinks();
+}
+
+function ico(color){
+  if(color==="green")return`<svg class="clic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#3eb53e"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  if(color==="orange")return`<svg class="clic" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2z" fill="#f0840c"/><path d="M8 6v4M8 12v.4" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  return`<svg class="clic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#dc3232"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+}
+
+function renderCL(vid,checks,title){
+  const view=document.getElementById(vid);
+  if(!checks.length){view.innerHTML='<div class="nr"><div class="nri">✅</div><div class="nrt">No checks available yet.</div></div>';return;}
+  const e=checks.filter(c=>c.color==="green").length;
+  let html=`<div class="clw"><div class="clh"><span class="clt">${title}</span><span class="clc">${e*2} / ${checks.length*2}</span></div>`;
+  checks.forEach(c=>{
+    const pts=c.color==="green"?'<span class="clp p">+2</span>':'<span class="clp z">+0</span>';
+    const eye=c.canHL?`<button class="eyeb" data-id="${c.id}" title="Highlight in editor">👁</button>`:'<span style="width:20px;display:inline-block;"></span>';
+    html+=`<div class="cli">${ico(c.color)}<div class="clib"><div class="clin">${c.title}</div><div class="clim">${c.msg}</div></div><div class="clir">${pts}${eye}</div></div>`;
+  });
+  html+="</div>";view.innerHTML=html;
+  bindEyes(view,[...RES.r,...RES.s,...RES.a,...RES.e]);
+}
+
+function bindEyes(view,allC){
+  view.querySelectorAll(".eyeb").forEach(btn=>{
+    const r=allC.find(x=>x.id===btn.dataset.id);
+    if(r&&r.canHL&&r.hl)btn.addEventListener("click",()=>actEye(btn,r.hl));
+  });
+}
+
+function renderOv(){
+  const view=document.getElementById("pv-overview");
+  const allC=[...RES.r,...RES.s,...RES.a,...RES.e];
+  const PRI={ki:"High",kh:"High",tl:"High",sh:"High",aq:"High",ed:"High",ea:"High",kd:"Medium",mk:"Medium",il:"Medium",el:"Medium",cl:"Medium",ai:"Medium",af:"Medium",al:"Medium",pv:"Medium",sl:"Medium",tw:"Medium",ml:"Medium",kt:"Medium",ksb:"Medium",kl:"Low",tw2:"Low",ks:"Low",cs:"Low",ps:"Low",ap:"Low",ad:"Low",as:"Low",ec:"Low",ek:"Low",es:"Low",ia:"Low"};
+  const pts={High:4,Medium:3,Low:2};
+  const failing=allC.filter(c=>c.color!=="green").map(c=>({...c,prio:PRI[c.id]||"Medium",impact:pts[PRI[c.id]||"Medium"]})).sort((a,b)=>b.impact-a.impact).slice(0,5);
+  const ptr=Math.max(2,Math.min(98,flScore));
+  let html="";
+  if(flScore>0)html+=`<div class="fls"><div class="flt">Flesch Reading Ease</div><div class="flb"><div class="flp" style="left:${ptr}%"></div></div><div class="fll"><span>Hard (0)</span><span>OK (50)</span><span>Easy (100)</span></div><div class="fli"><span class="fln">${Math.round(flScore)}</span><span class="fld">${flLbl(flScore)}</span></div></div>`;
+  html+=`<div class="pws"><div class="pwt">Word Quality</div><div class="pwrow"><div class="pwb" id="pwbp"><div class="pwn pw">${pwC.p}</div><div class="pwl">💪 Power words</div></div><div class="pwb" id="pwbw"><div class="pwn wk">${pwC.w}</div><div class="pwl">⚠️ Weak/filler words</div></div></div></div>`;
+  if(failing.length){
+    html+=`<div class="ovs"><div class="ovt">⚡ TOP PRIORITIES &nbsp;<strong style="color:var(--text)">${failing.length}</strong></div>`;
+    failing.forEach(f=>{
+      const b=f.prio==="High"?'<span class="prb h">High</span>':f.prio==="Medium"?'<span class="prb m">Medium</span>':'<span class="prb l">Low</span>';
+      const msg=f.msg.replace(/<[^>]+>/g,"").substring(0,65);
+      html+=`<div class="pri">${b}<span class="prt">${f.title}: ${msg}${msg.length>=65?"...":""}</span><span class="prp">+${f.impact} pts</span></div>`;
+    });
+    html+='<button class="va" id="va-seo">View all issues →</button></div>';
+  }else{html+='<div class="ovs"><div class="ovt">✅ All checks passed!</div></div>';}
+  view.innerHTML=html;
+  view.querySelector("#va-seo")?.addEventListener("click",()=>switchTab("seo"));
+  view.querySelector("#pwbp")?.addEventListener("click",()=>{clrHL();if(pwE.p.length)hlEls(pwE.p);});
+  view.querySelector("#pwbw")?.addEventListener("click",()=>{clrHL();if(pwE.w.length)hlEls(pwE.w);});
+}
+
+function renderCollapse(vid,checks,color,label,title){
+  const view=document.getElementById(vid);
+  const e=checks.filter(c=>c.color==="green").length;
+  const total=checks.length;
+  const sig=e>=total*0.75?"strong":e>=total*0.5?"moderate":"weak";
+  const sigL=sig==="strong"?"Strong":sig==="moderate"?"Moderate":"Weak";
+  let html=`<div class="cols"><div class="colh" id="colh-${vid}"><div class="cohl"><div class="cold" style="background:${color}"></div><span class="colt">${title}</span><span class="cols2 ${sig}">${sigL}</span></div><span class="colc" id="colc-${vid}">▼</span></div><div class="colb" id="colb-${vid}"><div class="clw"><div class="clh"><span class="clt">${label}</span><span class="clc">${e*2} / ${checks.length*2}</span></div>`;
+  checks.forEach(c=>{
+    const pts=c.color==="green"?'<span class="clp p">+2</span>':'<span class="clp z">+0</span>';
+    const eye=c.canHL?`<button class="eyeb" data-id="${c.id}" title="Highlight">👁</button>`:'<span style="width:20px;display:inline-block;"></span>';
+    html+=`<div class="cli">${ico(c.color)}<div class="clib"><div class="clin">${c.title}</div><div class="clim">${c.msg}</div></div><div class="clir">${pts}${eye}</div></div>`;
+  });
+  html+="</div></div></div></div>";view.innerHTML=html;
+  const hd=document.getElementById(`colh-${vid}`),body=document.getElementById(`colb-${vid}`),chev=document.getElementById(`colc-${vid}`);
+  hd.addEventListener("click",()=>{body.classList.toggle("open");chev.classList.toggle("open");});
+  bindEyes(view,[...RES.a,...RES.e]);
+}
+
+function renderAEO(){renderCollapse("pv-aeo",RES.a,"var(--orange)","AEO CHECKLIST","AEO — Answer Engine Optimization");}
+function renderEEAT(){renderCollapse("pv-eeat",RES.e,"var(--green)","EEAT CHECKLIST","EEAT — Experience & Trust Signals");}
+
+function renderLinks(){
+  const view=document.getElementById("pv-links");
+  const {links}=getED();const su=siteUrl();
+  const intL=links.filter(a=>isInt(a.getAttribute("href")||"",su));
+  const extL=links.filter(a=>isExt(a.getAttribute("href")||"",su));
+  let html=`<div class="lks"><div class="lkt">Internal Links (${intL.length})</div>`;
+  intL.length?intL.forEach(a=>{const h=a.getAttribute("href")||"";html+=`<div class="lki"><div class="lkn">${tx(a)||h}</div><div class="lku">${h}</div></div>`;}):(html+='<div class="lke">No internal links found. Add links to related content on your site.</div>');
+  html+=`</div><div class="lks"><div class="lkt">Outbound Links (${extL.length})</div>`;
+  extL.length?extL.forEach(a=>{const h=a.getAttribute("href")||"";html+=`<div class="lki"><div class="lkn">${tx(a)||h}</div><div class="lku">${h}</div></div>`;}):(html+='<div class="lke">No outbound links found. Link to authoritative external sources.</div>');
+  html+="</div>";view.innerHTML=html;
+}
+
+function updGauge(){
+  const sc=SC.ov,circ=251.2,offset=circ-(circ*(sc/100));
+  const fg=document.getElementById("gfg");
+  fg.style.strokeDashoffset=offset;
+  fg.style.stroke=sc>=75?"#3eb53e":sc>=50?"#f0840c":"#dc3232";
+  document.getElementById("gn").textContent=sc;
+  document.getElementById("gl").textContent=sc>=75?"Good job! Keep optimizing.":sc>=50?"Getting there! Keep improving.":"Needs work. Review the issues below.";
+  document.getElementById("sclbl").textContent=`Overall: ${sc>=75?"Good":sc>=50?"Fair":"Needs Work"}`;
+}
+function updBars(){
+  [["s","cb-s","csc-s"],["r","cb-r","csc-r"],["a","cb-a","csc-a"],["e","cb-e","csc-e"]].forEach(([k,bar,sc])=>{
+    const v={s:SC.s,r:SC.r,a:SC.a,e:SC.e}[k];
+    document.getElementById(bar).style.width=v+"%";
+    document.getElementById(sc).textContent=v+"/100";
+  });
+}
+function updBadges(){
+  const all=[...RES.r,...RES.s,...RES.a,...RES.e];
+  document.getElementById("bi").textContent=all.filter(c=>c.color==="red").length;
+  document.getElementById("bo").textContent=all.filter(c=>c.color==="orange").length;
+}
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+function switchTab(tab){
+  document.querySelectorAll(".pt").forEach(t=>t.classList.toggle("active",t.dataset.tab===tab));
+  document.querySelectorAll(".pv").forEach(v=>v.classList.toggle("active",v.id==="pv-"+tab));
+  document.querySelectorAll(".ni").forEach(n=>n.classList.toggle("active",n.dataset.nav===tab));
+}
+document.querySelectorAll(".ni").forEach(ni=>{
+  ni.addEventListener("click",()=>{
+    const nav=ni.dataset.nav;
+    switchTab(nav==="issues"?"seo":nav==="opportunities"?"readability":nav);
+    document.querySelectorAll(".ni").forEach(n=>n.classList.toggle("active",n===ni));
+  });
+});
+document.querySelectorAll(".pt").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    switchTab(tab.dataset.tab);
+    document.querySelectorAll(".ni").forEach(n=>n.classList.toggle("active",n.dataset.nav===tab.dataset.tab));
+  });
+});
+
+// ════════════════════════════════════════
+// TOOLBAR
+// ════════════════════════════════════════
+function fmt(cmd){document.getElementById("eb").focus();document.execCommand(cmd,false,null);}
+document.getElementById("tbfmt").addEventListener("change",function(){
+  document.getElementById("eb").focus();
+  document.execCommand("formatBlock",false,this.value);this.value="p";
+});
+document.getElementById("tbl").addEventListener("click",()=>{
+  const url=prompt("Enter URL:","https://");
+  if(url){document.getElementById("eb").focus();document.execCommand("createLink",false,url);}
+});
+document.getElementById("tbt").addEventListener("click",()=>{
+  const t=`<table><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Cell</td><td>Cell</td><td>Cell</td></tr><tr><td>Cell</td><td>Cell</td><td>Cell</td></tr></tbody></table><p><br></p>`;
+  document.getElementById("eb").focus();document.execCommand("insertHTML",false,t);
+});
+
+// ════════════════════════════════════════
+// COUNTERS
+// ════════════════════════════════════════
+function updCtr(val,max,cid,bid){
+  const l=val.length,el=document.getElementById(cid),bar=document.getElementById(bid);
+  if(el){el.textContent=`${l} / ${max}`;el.className="ctr"+(l>max?" r":l>=max*0.8?" g":"");}
+  if(bar){bar.style.width=Math.min(100,(l/max)*100)+"%";bar.style.background=l>max?"var(--red)":"var(--green)";}
+}
+document.getElementById("fkp").addEventListener("input",function(){updCtr(this.value,60,"ckp","bkp");});
+document.getElementById("ftt").addEventListener("input",function(){updCtr(this.value,60,"ctt","btt");});
+document.getElementById("fmd").addEventListener("input",function(){updCtr(this.value,156,"cmd","bmd");});
+document.getElementById("fh1").addEventListener("input",function(){updCtr(this.value,70,"ch1","bh1");});
+document.getElementById("fsl").addEventListener("input",function(){
+  const c=this.selectionStart;
+  this.value=this.value.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9\-]/g,"");
+  try{this.setSelectionRange(c,c);}catch(e){}
+});
+
+// Website URL
+const urlI=document.getElementById("furl"),urlS=document.getElementById("urls");
+const svd=localStorage.getItem("pasado_site_url");
+if(svd){urlI.value=svd;showUrlOk();}
+function showUrlOk(){urlS.innerHTML=`<div class="url-ok">✓ Saved locally <button class="url-clr" id="uclr">Clear</button></div>`;document.getElementById("uclr")?.addEventListener("click",()=>{urlI.value="";localStorage.removeItem("pasado_site_url");urlS.innerHTML="";});}
+urlI.addEventListener("input",function(){
+  if(this.value.trim()){localStorage.setItem("pasado_site_url",this.value.trim());showUrlOk();}
+  else{localStorage.removeItem("pasado_site_url");urlS.innerHTML="";}
+});
+
+// Stats
+const eb=document.getElementById("eb");
+function updStats(){
+  const t=eb.innerText||"";const w=cw(t);
+  document.getElementById("stw").textContent=w.toLocaleString();
+  document.getElementById("stc").textContent=t.replace(/\s+/g,"").length.toLocaleString();
+  document.getElementById("sth").textContent=eb.querySelectorAll("h1,h2,h3,h4").length;
+  document.getElementById("stp").textContent=eb.querySelectorAll("p,li").length;
+  document.getElementById("str").textContent=Math.max(1,Math.round(w/200))+" min";
+}
+eb.addEventListener("input",()=>{updStats();markUnsaved();});
+
+// ════════════════════════════════════════
+// PASTE HANDLER
+// ════════════════════════════════════════
+eb.addEventListener("paste",e=>{
+  e.preventDefault();
+  const html=e.clipboardData.getData("text/html");
+  const text=e.clipboardData.getData("text/plain");
+  const cleaned=html?cleanP(html):plainP(text);
+  const sel=window.getSelection();
+  if(sel&&sel.rangeCount){
+    const r=sel.getRangeAt(0);r.deleteContents();
+    const f=r.createContextualFragment(cleaned);
+    const last=f.lastChild;r.insertNode(f);
+    if(last){const r2=document.createRange();r2.setStartAfter(last);r2.collapse(true);sel.removeAllRanges();sel.addRange(r2);}
+  }else eb.innerHTML+=cleaned;
+  updStats();markUnsaved();
+});
+function cleanP(html){
+  const doc=new DOMParser().parseFromString(html,"text/html");
+  doc.querySelectorAll("script,style,meta,link").forEach(e=>e.remove());
+  doc.querySelectorAll("*").forEach(el=>{["style","class","id","lang","dir","bgcolor","align","valign","width","height","cellpadding","cellspacing","border"].forEach(a=>el.removeAttribute(a));});
+  doc.querySelectorAll("span").forEach(s=>{if(!s.parentNode)return;const p=s.parentNode;while(s.firstChild)p.insertBefore(s.firstChild,s);p.removeChild(s);});
+  doc.querySelectorAll("div,section,article,header,footer").forEach(el=>{if(!el.parentNode)return;const p=el.parentNode;while(el.firstChild)p.insertBefore(el.firstChild,el);p.removeChild(el);});
+  doc.querySelectorAll("p,h1,h2,h3,li").forEach(el=>{if(!(el.textContent||"").trim())el.remove();});
+  return doc.body.innerHTML||"";
+}
+function plainP(text){
+  const pp=text.split(/\n\n+/).filter(p=>p.trim());
+  return pp.length?pp.map(p=>`<p>${p.replace(/\n/g,"<br>")}</p>`).join(""):`<p>${text}</p>`;
+}
+
+// ════════════════════════════════════════
+// AUTO-SAVE
+// ════════════════════════════════════════
+function markUnsaved(){const el=document.getElementById("asv");el.className="asv pn";el.textContent="Unsaved changes...";}
+function doSave(){
+  const d={kp:document.getElementById("fkp").value,tt:document.getElementById("ftt").value,sl:document.getElementById("fsl").value,md:document.getElementById("fmd").value,h1:document.getElementById("fh1").value,body:eb.innerHTML,ts:Date.now()};
+  localStorage.setItem("pasado_v2_as",JSON.stringify(d));
+  const el=document.getElementById("asv");el.className="asv ok";el.textContent="Auto-saved just now ✓";
+}
+function loadSave(){
+  const raw=localStorage.getItem("pasado_v2_as");if(!raw)return;
+  try{
+    const d=JSON.parse(raw);
+    if(d.kp)document.getElementById("fkp").value=d.kp;
+    if(d.tt)document.getElementById("ftt").value=d.tt;
+    if(d.sl)document.getElementById("fsl").value=d.sl;
+    if(d.md)document.getElementById("fmd").value=d.md;
+    if(d.h1)document.getElementById("fh1").value=d.h1;
+    if(d.body)eb.innerHTML=d.body;
+    updCtr(d.kp||"",60,"ckp","bkp");updCtr(d.tt||"",60,"ctt","btt");
+    updCtr(d.md||"",156,"cmd","bmd");updCtr(d.h1||"",70,"ch1","bh1");
+    updStats();
+    const mins=Math.round((Date.now()-d.ts)/60000);
+    const el=document.getElementById("asv");el.className="asv ok";
+    el.textContent=`Auto-saved ${mins>0?mins+" min ago":"just now"} ✓`;
+  }catch(e){}
+}
+setInterval(()=>{if((eb.innerText||"").trim().length>0)doSave();},120000);
+
+// ════════════════════════════════════════
+// CLEAR ALL
+// ════════════════════════════════════════
+document.getElementById("btn-clear").addEventListener("click",()=>{
+  if(!confirm("Clear all fields? This cannot be undone."))return;
+  ["fkp","ftt","fsl","fmd","fh1"].forEach(id=>document.getElementById(id).value="");
+  eb.innerHTML="";updCtr("",60,"ckp","bkp");updCtr("",60,"ctt","btt");updCtr("",156,"cmd","bmd");updCtr("",70,"ch1","bh1");
+  updStats();clrHL();
+  RES={r:[],s:[],a:[],e:[]};analyzed=false;SC={r:0,s:0,a:0,e:0,ov:0};
+  [["pv-overview","📋","Click Analyze Content to see your results."],["pv-seo","🔍","Run analysis to see SEO checks."],["pv-readability","📖","Run analysis to see readability checks."],["pv-aeo","⚡","Run analysis to see AEO checks."],["pv-eeat","🛡️","Run analysis to see EEAT checks."],["pv-links","🔗","Run analysis to see link details."]].forEach(([id,ico,msg])=>document.getElementById(id).innerHTML=`<div class="nr"><div class="nri">${ico}</div><div class="nrt">${msg}</div></div>`);
+  document.getElementById("gn").textContent="—";document.getElementById("gfg").style.strokeDashoffset=251.2;document.getElementById("gfg").style.stroke="#e5e7eb";
+  document.getElementById("gl").textContent="Analyze your content to get a score";document.getElementById("sclbl").textContent="Click Analyze to score";
+  ["csc-s","csc-r","csc-a","csc-e"].forEach(id=>document.getElementById(id).textContent="—");
+  ["cb-s","cb-r","cb-a","cb-e"].forEach(id=>document.getElementById(id).style.width="0%");
+  document.getElementById("bi").textContent=0;document.getElementById("bo").textContent=0;
+  document.getElementById("asv").className="asv pn";document.getElementById("asv").textContent="Not saved";
+  localStorage.removeItem("pasado_v2_as");
+});
+
+// ════════════════════════════════════════
+// ANALYZE BUTTON
+// ════════════════════════════════════════
+document.getElementById("btn-analyze").addEventListener("click",runAnalysis);
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")runAnalysis();});
+
+// ════════════════════════════════════════
+// REPORT
+// ════════════════════════════════════════
+document.getElementById("btn-report").addEventListener("click",()=>{
+  if(!analyzed){alert("Please run Analyze Content first.");return;}
+  const {tw}=getED();
+  const kp=document.getElementById("fkp").value||"—";
+  const h1=document.getElementById("fh1").value||"—";
+  const date=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  const tplEl=document.getElementById("set-tpl");
+  const tpl=tplEl.options[tplEl.selectedIndex].text;
+  function sc2(s){return s>=75?"g":s>=50?"o":"r";}
+  const allC=[...RES.r,...RES.s,...RES.a,...RES.e];
+  const passed=allC.filter(c=>c.color==="green").slice(0,3);
+  const issues=allC.filter(c=>c.color==="red").slice(0,3);
+  document.getElementById("rmcb").innerHTML=`
+    <div class="rmt">
+      <div class="rmtr"><span class="rmtk">Article (H1):</span><span class="rmtv">${h1}</span></div>
+      <div class="rmtr"><span class="rmtk">Keyphrase:</span><span class="rmtv">${kp}</span></div>
+      <div class="rmtr"><span class="rmtk">Template:</span><span class="rmtv">${tpl}</span></div>
+      <div class="rmtr"><span class="rmtk">Word Count:</span><span class="rmtv">${tw.toLocaleString()} words</span></div>
+      <div class="rmtr"><span class="rmtk">Date:</span><span class="rmtv">${date}</span></div>
+    </div>
+    <div class="rms">
+      <div class="rmsb"><div class="rmsbn">Overall</div><div class="rmsbv ${sc2(SC.ov)}">${SC.ov}/100</div></div>
+      <div class="rmsb"><div class="rmsbn">SEO</div><div class="rmsbv ${sc2(SC.s)}">${SC.s}/100</div></div>
+      <div class="rmsb"><div class="rmsbn">Readability</div><div class="rmsbv ${sc2(SC.r)}">${SC.r}/100</div></div>
+      <div class="rmsb"><div class="rmsbn">AEO</div><div class="rmsbv ${sc2(SC.a)}">${SC.a}/100</div></div>
+    </div>
+    <div class="rml"><div class="rmlt g">✅ Things Done Well</div>${passed.length?passed.map(c=>`<div class="rmli"><span>✓</span> ${c.title}</div>`).join(""):'<div class="rmli">Run analysis to see results.</div>'}</div>
+    <div class="rml"><div class="rmlt r">❌ Issues to Fix</div>${issues.length?issues.map(c=>`<div class="rmli"><span>✗</span> ${c.title}: ${c.msg.replace(/<[^>]+>/g,"").substring(0,80)}</div>`).join(""):'<div class="rmli">No critical issues found!</div>'}</div>
+    <div class="rmac">
+      <button class="rma" onclick="window.print()">🖨️ Print</button>
+      <button class="rma pr" onclick="cpyRpt()">📋 Copy as Text</button>
+    </div>`;
+  document.getElementById("rm").classList.add("open");
+});
+function cpyRpt(){
+  const {tw}=getED();const kp=document.getElementById("fkp").value||"—";const h1=document.getElementById("fh1").value||"—";
+  const t=`PASADO — Content Score Card (${new Date().toLocaleDateString()})\n\nArticle: ${h1}\nKeyphrase: ${kp}\nWord Count: ${tw}\n\nOverall: ${SC.ov}/100 | SEO: ${SC.s}/100 | Readability: ${SC.r}/100 | AEO: ${SC.a}/100 | EEAT: ${SC.e}/100\n\nCritical Issues: ${[...RES.s,...RES.r].filter(c=>c.color==="red").map(c=>c.title).join(", ")||"None"}\n\nGenerated by Pasado SEO Checker V2 — developed by Josh Nunez`;
+  navigator.clipboard?.writeText(t).then(()=>alert("Copied!")).catch(()=>alert(t));
+}
+document.getElementById("rmx").addEventListener("click",()=>document.getElementById("rm").classList.remove("open"));
+document.getElementById("rm").addEventListener("click",e=>{if(e.target===document.getElementById("rm"))document.getElementById("rm").classList.remove("open");});
+
+// ════════════════════════════════════════
+// WHAT'S NEW MODAL
+// ════════════════════════════════════════
+document.getElementById("btn-wn").addEventListener("click",()=>document.getElementById("wm").classList.add("open"));
+document.getElementById("wmx").addEventListener("click",()=>document.getElementById("wm").classList.remove("open"));
+document.getElementById("wm").addEventListener("click",e=>{if(e.target===document.getElementById("wm"))document.getElementById("wm").classList.remove("open");});
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+loadSave();
+</script>
+</body>
+</html>
