@@ -331,6 +331,48 @@ textarea.fi{resize:vertical;min-height:68px;line-height:1.6;}
 .rma.pr{background:var(--green);border-color:var(--green);color:#fff;}
 .rma:hover{opacity:.8;}
 
+/* ═══ AI INSIGHTS PANEL ═══ */
+.ai-key-wrap{padding:10px 14px;}
+.ai-key-row{display:flex;gap:6px;align-items:center;}
+.ai-key-inp{flex:1;padding:7px 10px;border:1.5px solid var(--ib);border-radius:6px;font-family:inherit;font-size:12px;color:var(--text);background:var(--card2);}
+.ai-key-inp:focus{outline:none;border-color:var(--if);}
+.ai-key-btn{padding:7px 12px;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:var(--green);color:#fff;border:none;white-space:nowrap;transition:opacity .15s;}
+.ai-key-btn:hover{opacity:.85;}
+.ai-key-note{font-size:10px;color:var(--tm);margin-top:5px;line-height:1.5;}
+.ai-key-note a{color:var(--blue);text-decoration:none;}
+.ai-key-note a:hover{text-decoration:underline;}
+.ai-run-wrap{padding:10px 14px;}
+.ai-run-btn{width:100%;padding:9px 14px;border-radius:7px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#4fa3ff,#8b5cf6);color:#fff;border:none;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .15s;}
+.ai-run-btn:hover{opacity:.88;}
+.ai-run-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ai-run-btn svg{width:14px;height:14px;flex-shrink:0;}
+.ai-key-change{font-size:10px;color:var(--tm);text-align:center;margin-top:5px;cursor:pointer;text-decoration:underline;background:none;border:none;font-family:inherit;width:100%;}
+.ai-key-change:hover{color:var(--text);}
+.ai-results{padding:8px 14px 12px;}
+.ai-tip{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
+.ai-tip:last-child{border-bottom:none;}
+.ai-tip-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#4fa3ff,#8b5cf6);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ai-tip-body{flex:1;min-width:0;}
+.ai-tip-cat{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+.ai-tip-cat.seo{color:var(--blue);}
+.ai-tip-cat.readability{color:var(--purple);}
+.ai-tip-cat.aeo{color:var(--orange);}
+.ai-tip-cat.eeat{color:var(--green);}
+.ai-tip-cat.content{color:var(--gold);}
+.ai-tip-cat.high{color:var(--red);}
+.ai-tip-txt{font-size:12px;color:var(--text);line-height:1.45;font-weight:500;}
+.ai-tip-why{font-size:10.5px;color:var(--tm);margin-top:2px;line-height:1.4;}
+.ai-prio{padding:1px 6px;border-radius:3px;font-size:9.5px;font-weight:700;margin-left:5px;}
+.ai-prio.h{background:rgba(255,71,87,.15);color:var(--red);}
+.ai-prio.m{background:rgba(255,140,66,.15);color:var(--orange);}
+.ai-prio.l{background:var(--score-bg);color:var(--tm);}
+.ai-loading{padding:20px 14px;text-align:center;}
+.ai-loading-ico{font-size:22px;margin-bottom:8px;animation:spin 1.5s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-loading-txt{font-size:12px;color:var(--tm);}
+.ai-err{padding:12px 14px;font-size:11.5px;color:var(--red);background:rgba(255,71,87,.07);border-radius:6px;margin:8px 14px;line-height:1.5;}
+.ai-stamp{font-size:10px;color:var(--tx);text-align:center;padding:6px 14px 4px;display:flex;align-items:center;justify-content:center;gap:4px;}
+
 /* ═══ WHAT'S NEW MODAL ═══ */
 #wm{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;}
 #wm.open{display:flex;}
@@ -673,6 +715,39 @@ textarea.fi{resize:vertical;min-height:68px;line-height:1.6;}
         <div class="ppi"><input type="checkbox" id="pc4" onchange="updPPC()"><label for="pc4">Added expert quote or stat</label></div>
         <div class="ppi"><input type="checkbox" id="pc5" onchange="updPPC()"><label for="pc5">Reviewed meta title and description</label></div>
         <div class="ppi"><input type="checkbox" id="pc6" onchange="updPPC()"><label for="pc6">Confirmed article matches search intent</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Insights Section -->
+  <div class="psec" id="psec-ai">
+    <div class="psec-hd" id="psh-ai">
+      <div class="psec-hdl">
+        <div class="psec-ico" style="background:linear-gradient(135deg,rgba(79,163,255,.15),rgba(139,92,246,.15));">
+          <svg viewBox="0 0 12 12" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4">
+            <path d="M6 1l1 3h3l-2.5 2 1 3L6 7.5 3.5 9l1-3L2 4h3L6 1z" stroke="#8b5cf6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="psec-name" style="background:linear-gradient(90deg,#4fa3ff,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">AI Insights</div>
+          <div class="psec-sub" id="psub-ai">Gemini-powered suggestions</div>
+        </div>
+      </div>
+      <div class="psec-right">
+        <span class="psec-sc" style="font-size:10px;color:var(--purple);" id="psc-ai">Gemini</span>
+        <span class="psec-chev" id="pchev-ai">▼</span>
+      </div>
+    </div>
+    <div class="psec-body open" id="psb-ai">
+      <div id="ai-run-section">
+        <div class="ai-run-wrap">
+          <button class="ai-run-btn" id="ai-run-btn">
+            <svg viewBox="0 0 14 14" fill="currentColor" width="14" height="14"><path d="M8 1L5 7.5h4L7 13l6-7.5H9L8 1z"/></svg>
+            Get AI Insights
+          </button>
+          <div style="font-size:10px;color:var(--tx);text-align:center;margin-top:5px;">Analyzes your article with Gemini AI</div>
+        </div>
+        <div id="ai-output"></div>
       </div>
     </div>
   </div>
@@ -1363,11 +1438,115 @@ function initApp(){
   setupModals();
   setupFirebase();
   setupTheme();
+  setupAI();
 
   document.getElementById("btn-analyze")?.addEventListener("click",runAnalysis);
   document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")runAnalysis();});
 
   loadSave();
+}
+
+// ════════════════════════════════════════
+// AI INSIGHTS — GEMINI
+// ════════════════════════════════════════
+const AI_MODEL="gemini-flash-latest";
+const AI_KEY="PASTE_YOUR_GEMINI_KEY_HERE"; // ← replace with your key
+const AI_ENDPOINT=`https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent?key=${AI_KEY}`;
+
+function setupAI(){
+  // Add AI section to collapsibles
+  const psh=document.getElementById("psh-ai"),psb=document.getElementById("psb-ai"),chev=document.getElementById("pchev-ai");
+  if(psh&&psb&&chev)psh.addEventListener("click",()=>{psb.classList.toggle("open");chev.classList.toggle("open");});
+
+  document.getElementById("ai-run-btn")?.addEventListener("click",()=>{
+    runAI(document.getElementById("ai-output"),document.getElementById("ai-run-btn"));
+  });
+}
+
+async function runAI(output,btn){
+  if(!analyzed){output.innerHTML='<div class="ai-err">Run <strong>Analyze Content</strong> first, then get AI Insights.</div>';return;}
+  if(!AI_KEY||AI_KEY==="PASTE_YOUR_GEMINI_KEY_HERE"){output.innerHTML='<div class="ai-err">API key not set. Open the HTML file and replace <strong>PASTE_YOUR_GEMINI_KEY_HERE</strong> with your Gemini key.</div>';return;}
+
+  const {ft,tw}=getED();
+  const kp=document.getElementById("fkp").value||"(not set)";
+  const h1=document.getElementById("fh1").value||"(not set)";
+  const tt=document.getElementById("ftt").value||"(not set)";
+  const md=document.getElementById("fmd").value||"(not set)";
+  const tplEl=document.getElementById("set-tpl");
+  const tpl=tplEl.options[tplEl.selectedIndex].text;
+  const body=ft.slice(0,3000)+(ft.length>3000?"…[truncated]":"");
+
+  const prompt=`You are an expert SEO content editor reviewing an article for a content team. Give 5 specific, actionable suggestions to improve this content.
+
+Focus Keyphrase: ${kp}
+H1 Title: ${h1}
+SEO Title: ${tt}
+Meta Description: ${md}
+Template: ${tpl}
+Word Count: ${tw}
+Current Scores — SEO: ${SC.s}/100 | Readability: ${SC.r}/100 | AEO: ${SC.a}/100 | EEAT: ${SC.e}/100
+
+Article Body:
+${body}
+
+Return ONLY a valid JSON array with exactly 5 objects. No markdown, no explanation, just the JSON:
+[{"priority":"High|Medium|Low","category":"SEO|Readability|AEO|EEAT|Content","tip":"specific actionable improvement","why":"brief reason why it matters"}]`;
+
+  btn.disabled=true;
+  output.innerHTML=`<div class="ai-loading"><div class="ai-loading-ico">✦</div><div class="ai-loading-txt">Gemini is analyzing your content…</div></div>`;
+
+  try{
+    const res=await fetch(AI_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.4,maxOutputTokens:1200}})
+    });
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      const msg=err?.error?.message||`HTTP ${res.status}`;
+      if(res.status===400&&msg.includes("API_KEY_INVALID")){output.innerHTML=`<div class="ai-err">❌ Invalid API key. <button class="ai-key-change" onclick="document.getElementById('ai-key-change').click()">Change key</button></div>`;}
+      else if(res.status===429){output.innerHTML='<div class="ai-err">⏳ Rate limit hit. Wait a minute and try again (free tier: 15 req/min).</div>';}
+      else{output.innerHTML=`<div class="ai-err">API error: ${msg}</div>`;}
+      btn.disabled=false;return;
+    }
+    const data=await res.json();
+    const raw=data?.candidates?.[0]?.content?.parts?.[0]?.text||"";
+    const clean=raw.replace(/```json|```/g,"").trim();
+    let tips;
+    try{tips=JSON.parse(clean);}catch(e){output.innerHTML=`<div class="ai-err">Couldn't parse AI response. Try again.</div>`;btn.disabled=false;return;}
+    renderAITips(output,tips);
+    document.getElementById("psub-ai").textContent=`${tips.length} suggestions ready`;
+  }catch(e){
+    if(e.name==="TypeError"&&e.message.includes("fetch")){output.innerHTML='<div class="ai-err">Network error. Check your internet connection.</div>';}
+    else{output.innerHTML=`<div class="ai-err">Something went wrong: ${e.message}</div>`;}
+  }
+  btn.disabled=false;
+}
+
+function renderAITips(output,tips){
+  if(!Array.isArray(tips)||!tips.length){output.innerHTML='<div class="ai-err">No suggestions returned. Try again.</div>';return;}
+  const catColor={SEO:"seo",Readability:"readability",AEO:"aeo",EEAT:"eeat",Content:"content"};
+  const prioClass={High:"h",Medium:"m",Low:"l"};
+  let html='<div class="ai-results">';
+  tips.slice(0,5).forEach((t,i)=>{
+    const cat=(t.category||"Content").trim();
+    const prio=(t.priority||"Medium").trim();
+    const cc=catColor[cat]||"content";const pc=prioClass[prio]||"m";
+    html+=`<div class="ai-tip">
+      <div class="ai-tip-num">${i+1}</div>
+      <div class="ai-tip-body">
+        <div><span class="ai-tip-cat ${cc}">${cat}</span><span class="ai-prio ${pc}">${prio}</span></div>
+        <div class="ai-tip-txt">${t.tip||""}</div>
+        ${t.why?`<div class="ai-tip-why">${t.why}</div>`:""}
+      </div>
+    </div>`;
+  });
+  html+=`</div><div class="ai-stamp">✦ Powered by Gemini 1.5 Flash &nbsp;·&nbsp; <button class="ai-key-change" id="ai-run-again" style="display:inline;margin:0;text-decoration:underline;color:var(--blue);">Regenerate</button></div>`;
+  output.innerHTML=html;
+  document.getElementById("ai-run-again")?.addEventListener("click",()=>{
+    const btn=document.getElementById("ai-run-btn");
+    runAI(output,btn);
+  });
 }
 
 window.addEventListener("tt-ready",initApp);
