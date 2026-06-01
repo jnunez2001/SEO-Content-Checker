@@ -1450,7 +1450,7 @@ function initApp(){
 // AI INSIGHTS — GEMINI
 // ════════════════════════════════════════
 const AI_MODEL="gemini-flash-latest";
-const AI_KEY="PASTE_YOUR_GEMINI_KEY_HERE"; // ← replace with your key
+const AI_KEY=""; // ← replace with your key
 const AI_ENDPOINT=`https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent?key=${AI_KEY}`;
 
 function setupAI(){
@@ -1465,7 +1465,7 @@ function setupAI(){
 
 async function runAI(output,btn){
   if(!analyzed){output.innerHTML='<div class="ai-err">Run <strong>Analyze Content</strong> first, then get AI Insights.</div>';return;}
-  if(!AI_KEY||AI_KEY==="PASTE_YOUR_GEMINI_KEY_HERE"){output.innerHTML='<div class="ai-err">API key not set. Open the HTML file and replace <strong>PASTE_YOUR_GEMINI_KEY_HERE</strong> with your Gemini key.</div>';return;}
+  if(!AI_KEY||AI_KEY===""){output.innerHTML='<div class="ai-err">API key not set. Open the HTML file and replace <strong></strong> with your Gemini key.</div>';return;}
 
   const {ft,tw}=getED();
   const kp=document.getElementById("fkp").value||"(not set)";
